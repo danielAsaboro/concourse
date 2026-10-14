@@ -57,7 +57,8 @@ function reasonFor(stand: Stand, r: Ranked, anchors: string[]): string {
   const top = Object.entries(r.drivers).sort((a, b) => b[1] - a[1])[0];
   const v = vendorById.get(r.vendorId);
   const bits = [`Affinity ${r.affinity.toFixed(2)} for the ${anchors.join(" + ")} crowd`];
-  if (top) bits.push(`${Math.round(top[1] * 100)}% of that score comes from ${top[0]} fans`);
+  // Explainability scores are normalised contributions, not shares, so never render them as percentages.
+  if (top) bits.push(`${top[0]} fans drive most of that score (driver score ${top[1].toFixed(2)})`);
   if (stand.zone === "club" && v?.premium) bits.push("premium-tier partner, so it suits the club");
   if (stand.zone === "club" && !v?.premium) bits.push("not a premium partner, so the club score is discounted");
   return bits.join(". ") + ".";
@@ -138,15 +139,24 @@ export async function buildPlan(eventId: string, overrides: Record<string, strin
   const grouped = groupRanked(ranked);
   let assignments = assign(grouped, anchors);
 
-  // Operator overrides from the UI ("swap this stand to X").
+  // Operator overrides from the UI ("swap this stand to X"). If X already holds another
+  // stand, the two stands exchange vendors, so a vendor never ends up on two stands.
+  const place = (a: Assignment, r: Ranked, why: string) => {
+    a.vendorId = r.vendorId; a.vendorName = r.name; a.affinity = r.affinity; a.fit = fitFor(a.stand, r);
+    a.drivers = r.drivers; a.tags = r.tags; a.reason = `${why} ${reasonFor(a.stand, r, anchors)}`;
+    a.alternatives = (grouped[a.stand.category] ?? []).filter((x) => x.vendorId !== r.vendorId).map((x) => ({ vendorId: x.vendorId, name: x.name, affinity: x.affinity, fit: fitFor(a.stand, x) })).sort((x, y) => y.fit - x.fit).slice(0, 5);
+  };
   for (const a of assignments) {
     const forced = overrides[a.stand.id];
-    if (!forced) continue;
+    if (!forced || forced === a.vendorId) continue;
     const r = ranked.find((x) => x.vendorId === forced);
     if (!r) continue;
-    a.vendorId = r.vendorId; a.vendorName = r.name; a.affinity = r.affinity; a.fit = fitFor(a.stand, r);
-    a.drivers = r.drivers; a.tags = r.tags; a.reason = `Operator override. ${reasonFor(a.stand, r, anchors)}`;
-    a.alternatives = (grouped[a.stand.category] ?? []).filter((x) => x.vendorId !== r.vendorId).map((x) => ({ vendorId: x.vendorId, name: x.name, affinity: x.affinity, fit: fitFor(a.stand, x) })).sort((x, y) => y.fit - x.fit).slice(0, 5);
+    const holder = assignments.find((x) => x !== a && x.vendorId === forced);
+    const displaced = ranked.find((x) => x.vendorId === a.vendorId);
+    place(a, r, "Operator override.");
+    if (holder && displaced && holder.stand.category === a.stand.category) {
+      place(holder, displaced, `Exchanged with ${a.stand.label} by an operator override.`);
+    }
   }
 
   let changed = 0;

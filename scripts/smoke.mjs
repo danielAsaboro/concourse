@@ -29,6 +29,24 @@ const empty = await post("/api/agent", "{}");
 ok(empty.status === 400, `agent with no question -> ${empty.status}`);
 
 const featured = ev.body?.featured ?? ev.body?.events?.[0]?.id;
+
+// Driver scores are normalised contributions, never shown as percentages.
+const fp = await get(`/api/plan?event=${encodeURIComponent(featured)}`);
+const pct = (fp.body?.assignments ?? []).filter((x) => /\d%/.test(x.reason));
+ok(fp.status === 200 && pct.length === 0, `no percentage in stand reasons (${pct.length} found)`);
+
+// Swapping a stand to a vendor that holds another stand exchanges the two; no duplicates.
+const as = fp.body?.assignments ?? [];
+const pair = as.flatMap((a) => as.filter((b) => b !== a && b.stand.category === a.stand.category).map((b) => [a, b]))[0];
+if (pair) {
+  const [a, b] = pair;
+  const sw = await get(`/api/plan?event=${encodeURIComponent(featured)}&overrides=${encodeURIComponent(`${a.stand.id}:${b.vendorId}`)}`);
+  const sa = sw.body?.assignments ?? [];
+  const ids = sa.map((x) => x.vendorId);
+  const na = sa.find((x) => x.stand.id === a.stand.id), nb = sa.find((x) => x.stand.id === b.stand.id);
+  ok(sw.status === 200 && new Set(ids).size === ids.length && na?.vendorId === b.vendorId && nb?.vendorId === a.vendorId,
+    `swap ${a.stand.label} to ${b.vendorName} exchanges with ${b.stand.label}, no duplicate vendors`);
+}
 const ans = await post("/api/agent", JSON.stringify({ question: "What changes from last night?", event: featured }));
 ok(ans.status === 200 && typeof ans.body?.text === "string" && ans.body.text.length > 0, `agent answers (${ans.body?.engine}): ${String(ans.body?.text).slice(0, 80)}…`);
 
