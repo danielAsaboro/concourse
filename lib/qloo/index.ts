@@ -85,6 +85,9 @@ export async function rankShortlist(anchors: Anchor[], vendors: Vendor[], ledger
   const byType = new Map<string, Vendor[]>();
   for (const v of vendors) byType.set(v.qlooType, [...(byType.get(v.qlooType) ?? []), v]);
 
+  if (aIds.size === 0) throw new Error(`NO_SIGNAL: none of ${anchors.map((a) => a.name).join(", ")} resolved to a Qloo entity`);
+  const unresolved = vendors.filter((v) => !vIds.has(v.id)).map((v) => v.name);
+
   const ranked: Ranked[] = [];
   for (const [type, vs] of byType) {
     const params = {
@@ -120,7 +123,7 @@ export async function rankShortlist(anchors: Anchor[], vendors: Vendor[], ledger
       mode,
       endpoint: "/v2/insights",
       params,
-      summary: `Ranked ${res.results.entities.length} ${type.replace("urn:entity:", "")} candidates for ${anchors.map((a) => a.name).join(" + ")} with explainability`,
+      summary: `Ranked ${res.results.entities.length} ${type.replace("urn:entity:", "")} candidates for ${anchors.map((a) => a.name).join(" + ")} with explainability${unresolved.length ? ` (${unresolved.length} vendor names not found in Qloo, left unranked)` : ""}`,
       ms: Date.now() - t0,
     });
   }
@@ -156,13 +159,17 @@ export async function compareCrowds(a: Anchor[], b: Anchor[], ledger: Ledger): P
   if (mode === "mock") res = mockCompare(a.map((x) => x.id), b.map((x) => x.id));
   else res = await (await live()).qlooGet<CompareResponse>("/v2/analysis/compare", params);
   ledger.add({ mode, endpoint: "/v2/analysis/compare", params, summary: `Taste overlap and differences: ${a[0].name} crowd vs ${b[0].name} crowd`, ms: Date.now() - t0 });
-  const tags = res.results.tags ?? [];
+  // The compare response shape is not pinned down by the docs: the OpenAPI spec types
+  // `results` as an array, while tag-level a/b affinities are what we need. Accept either
+  // and drop rows that lack both sides instead of defaulting them to 0. Unverified live.
+  const raw = res.results as unknown;
+  const tags = (Array.isArray(raw) ? raw : (res.results?.tags ?? [])) as Partial<CompareResponse["results"]["tags"][number]>[];
   return tags
+    .filter((t) => t.name && typeof t.query?.a?.affinity === "number" && typeof t.query?.b?.affinity === "number")
     .map((t) => {
-      // Live responses may not include a precomputed delta; derive it.
-      const av = t.query?.a?.affinity ?? 0;
-      const bv = t.query?.b?.affinity ?? 0;
-      return { name: t.name, a: av, b: bv, delta: t.query?.delta ?? +(av - bv).toFixed(3) };
+      const av = t.query!.a.affinity;
+      const bv = t.query!.b.affinity;
+      return { name: t.name!, a: av, b: bv, delta: typeof t.query!.delta === "number" ? t.query!.delta : +(av - bv).toFixed(3) };
     })
     .sort((x, y) => Math.abs(y.delta) - Math.abs(x.delta))
     .slice(0, 8);

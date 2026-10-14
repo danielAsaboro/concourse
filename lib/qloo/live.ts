@@ -21,19 +21,36 @@ function saveIds() {
 const memo = new Map<string, { at: number; value: unknown }>();
 const TTL_MS = 1000 * 60 * 60 * 12;
 
+/** Every live failure resolves to one named state; none of them is treated as an empty result. */
+export class QlooError extends Error {
+  constructor(public state: "NO_KEY" | "TIMEOUT" | "HTTP_ERROR" | "NETWORK" | "MALFORMED", message: string) {
+    super(`${state}: ${message}`);
+  }
+}
+
+const TIMEOUT_MS = 10_000;
+
 export async function qlooGet<T>(endpoint: string, params: Record<string, string>): Promise<T> {
   const key = process.env.QLOO_API_KEY;
-  if (!key) throw new Error("QLOO_API_KEY is not set");
+  if (!key) throw new QlooError("NO_KEY", "QLOO_API_KEY is not set");
   const qs = new URLSearchParams(params).toString();
   const url = `${BASE}${endpoint}?${qs}`;
   const hit = memo.get(url);
   if (hit && Date.now() - hit.at < TTL_MS) return hit.value as T;
-  const res = await fetch(url, { headers: { "X-Api-Key": key, accept: "application/json" }, cache: "no-store" });
+  let res: Response;
+  try {
+    res = await fetch(url, { headers: { "X-Api-Key": key, accept: "application/json" }, cache: "no-store", signal: AbortSignal.timeout(TIMEOUT_MS) });
+  } catch (e) {
+    const name = (e as Error).name;
+    if (name === "TimeoutError" || name === "AbortError") throw new QlooError("TIMEOUT", `${endpoint} took longer than ${TIMEOUT_MS / 1000}s`);
+    throw new QlooError("NETWORK", `${endpoint}: ${(e as Error).message}`);
+  }
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    throw new Error(`Qloo ${endpoint} -> ${res.status}: ${body.slice(0, 200)}`);
+    throw new QlooError("HTTP_ERROR", `${endpoint} -> ${res.status}: ${body.slice(0, 200)}`);
   }
-  const json = (await res.json()) as T;
+  let json: T;
+  try { json = (await res.json()) as T; } catch { throw new QlooError("MALFORMED", `${endpoint} returned non-JSON`); }
   memo.set(url, { at: Date.now(), value: json });
   return json;
 }
