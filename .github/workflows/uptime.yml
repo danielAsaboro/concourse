@@ -1,0 +1,22 @@
+# Runs the smoke test against the deployed app every 30 minutes through the
+# judging window (ends Nov 16, 2026 11:45 pm ET). Set the repository variable
+# DEPLOY_URL (Settings → Secrets and variables → Actions → Variables).
+# A failed run emails the repo owner by default.
+name: uptime
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+jobs:
+  smoke:
+    if: ${{ vars.DEPLOY_URL != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/smoke.mjs
+        env:
+          BASE_URL: ${{ vars.DEPLOY_URL }}

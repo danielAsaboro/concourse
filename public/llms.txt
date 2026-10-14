@@ -1,0 +1,28 @@
+# Concourse
+
+> Event-night agent for arena operators, built for the Qloo Agentic Hackathon 2026. It ranks a venue's own food, drink, merch and sponsor partners for the specific crowd coming tonight using Qloo taste data, lays the result out on a 3D arena, explains each pick and swaps stands on request.
+
+Data status: the hosted demo shows synthetic demo data shaped like Qloo responses until the hackathon API key is active. The UI labels the mode ("Demo data" or "Live data").
+
+## How it works
+- Qloo /v2/insights with filter.results.entities and feature.explainability scores the venue's shortlist against tonight's headliners (anchor entities resolved via /search).
+- Qloo urn:demographics gives the crowd's age and gender offsets (relative skews, not shares).
+- Qloo /v2/analysis/compare contrasts tonight's crowd with last night's.
+- A greedy assigner puts the best-fitting partner of each category on each stand, weighting premium partners toward club stands.
+- A Claude tool-use agent (tools: qloo_rank, qloo_demographics, qloo_compare, swap_stand) answers operator questions; without a model key a deterministic planner answers from the same plan.
+
+## API (read-only, no auth)
+- GET /api/events: events, data mode, agent engine, featured event id
+- GET /api/plan?event=<id>: the full plan (stand assignments, affinities, drivers, alternatives, demographics, compare diff, evidence ledger)
+- POST /api/agent {"question": "...", "event": "<id>"}: agent answer, Qloo calls made, stand swaps
+
+## Limits
+- Stand layout, vendor catalogue and event schedule are synthetic demo data.
+- Affinities are relative within one query; never compared across events.
+- "Per-cap lift" is a heuristic, not a Qloo output.
+- No personal data is sent to Qloo; nothing is inferred about individuals.
+
+## Docs
+- README.md: setup, proof table, limitations
+- docs/qloo.md: enforcement layers, failure states, docs-vs-live differences
+- License: MIT
