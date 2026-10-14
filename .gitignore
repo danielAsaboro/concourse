@@ -1,7 +1,11 @@
 node_modules
 .next
 .env
-.env.local
+.env*.local
 .cache
+.vercel
 *.log
+logs/
 .DS_Store
+# Internal hackathon notes live in the private parent folder, never here.
+hackathon/
