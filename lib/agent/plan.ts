@@ -117,7 +117,8 @@ function llmOnlyBaseline(ranked: Ranked[]) {
 
 export function previousEventFor(ev: VenueEvent): VenueEvent | null {
   const i = EVENTS.findIndex((e) => e.id === ev.id);
-  return i > 0 ? EVENTS[i - 1] : EVENTS[EVENTS.length - 1] === ev ? null : EVENTS[EVENTS.length - 1];
+  // EVENTS is in date order, so the previous night is the entry before. The first has none.
+  return i > 0 ? EVENTS[i - 1] : null;
 }
 
 export async function buildPlan(eventId: string, overrides: Record<string, string> = {}): Promise<Plan> {

@@ -23,6 +23,22 @@ export type VenueEvent = {
 
 export const EVENTS: VenueEvent[] = [
   {
+    id: "dave-chappelle",
+    title: "Dave Chappelle",
+    kind: "comedy",
+    date: "Thu 15 Oct",
+    anchors: [
+      { id: "dave-chappelle", name: "Dave Chappelle", qlooType: "urn:entity:person", weight: 1 },
+      { id: "chris-rock", name: "Chris Rock", qlooType: "urn:entity:person", weight: 0.5 },
+    ],
+    profile: { comedy: 1, hiphop: 0.6, premium: 0.4, pop: 0.3 },
+    demographics: {
+      age: { "24_and_younger": -0.2, "25_to_29": 0.1, "30_to_34": 0.3, "35_to_44": 0.35, "45_to_54": 0.1, "55_and_older": -0.2 },
+      gender: { male: 0.12, female: -0.12 },
+    },
+    expectedAttendance: 16500,
+  },
+  {
     id: "bad-bunny",
     title: "Bad Bunny",
     kind: "concert",
@@ -102,22 +118,9 @@ export const EVENTS: VenueEvent[] = [
     },
     expectedAttendance: 18800,
   },
-  {
-    id: "dave-chappelle",
-    title: "Dave Chappelle",
-    kind: "comedy",
-    date: "Fri 30 Oct",
-    anchors: [
-      { id: "dave-chappelle", name: "Dave Chappelle", qlooType: "urn:entity:person", weight: 1 },
-      { id: "chris-rock", name: "Chris Rock", qlooType: "urn:entity:person", weight: 0.5 },
-    ],
-    profile: { comedy: 1, hiphop: 0.6, premium: 0.4, pop: 0.3 },
-    demographics: {
-      age: { "24_and_younger": -0.2, "25_to_29": 0.1, "30_to_34": 0.3, "35_to_44": 0.35, "45_to_54": 0.1, "55_and_older": -0.2 },
-      gender: { male: 0.12, female: -0.12 },
-    },
-    expectedAttendance: 16500,
-  },
 ];
+
+/** The event the app opens on. Its previous night (Dave Chappelle) gives the crowd diff a real contrast. */
+export const FEATURED_EVENT_ID = "bad-bunny";
 
 export const eventById = new Map(EVENTS.map((e) => [e.id, e]));
