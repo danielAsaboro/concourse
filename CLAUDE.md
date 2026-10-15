@@ -15,7 +15,7 @@ Repo map:
 - lib/agent/ plan.ts (ranking → assignment → diff), chat.ts (Claude tools + offline planner)
 - lib/venue/ synthetic arena, vendor catalogue, events (date order; first event has no previous night)
 - lib/deep/ real-venue planner (Climate Pledge Arena): sourced venue data, economics, Erlang C queues, newsvendor par levels, HiGHS MIP solver, ablation/sensitivity analysis (lib/deep/README.md)
-- app/night + app/api/night the real-venue planner page and API
+- app/night + app/api/night the real-venue planner page and API; app/api/mcp a public stateless MCP server over the same planner
 - predictions/ dated, hashed pre-registered predictions. Never edit a committed file there; add a new dated one
 - docs/ judge-facing docs and screenshots only
 

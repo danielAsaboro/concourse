@@ -16,6 +16,10 @@ Data status: the hosted demo shows synthetic demo data shaped like Qloo response
 - GET /api/plan?event=<id>: the full plan (stand assignments, affinities, drivers, alternatives, demographics, compare diff, evidence ledger)
 - POST /api/agent {"question": "...", "event": "<id>"}: agent answer, Qloo calls made, stand swaps
 
+## MCP server
+- POST /api/mcp (JSON-RPC, MCP Streamable HTTP, stateless). Tools: list_events, plan_event, erlang_c, newsvendor, textbook_checks.
+- Plans the real-venue event-night decision for Climate Pledge Arena (flexible stand concepts, registers, par levels) and re-runs published textbook checks.
+
 ## Limits
 - Stand layout, vendor catalogue and event schedule are synthetic demo data.
 - Affinities are relative within one query; never compared across events.
