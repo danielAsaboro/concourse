@@ -1,0 +1,1812 @@
+{
+ "retrieved": "2026-10-15",
+ "venue": {
+  "name": "Climate Pledge Arena",
+  "city": "Seattle, WA",
+  "capacity": {
+   "hockey": 17100,
+   "basketball": 18300,
+   "concert": 17200
+  },
+  "capacitySource": "https://climatepledgearena.com/frequently-asked-questions/",
+  "concessionaire": "Delaware North",
+  "concessionaireSource": "https://www.climatepledgearena.com/food-beverage",
+  "pouringRights": {
+   "domesticBeer": "Coors Light (Molson Coors), official domestic beer partner, announced 2021-03-09",
+   "craftBeer": "Hop Valley Brewing (Molson Coors), official craft beer partner, announced 2021-03-09",
+   "importBeer": "Modelo (partnership announced 2021-06-01; Corona Premier draft at Modelo Bar per value menu)",
+   "softDrinks": "PepsiCo, official soft drink partner, announced 2021-10-08",
+   "note": "Partnership announcements are from 2021; current contract status is not published. On-site branding in 2026 (Coors Light Landing / Center Ice / Mountain Market, Modelo Bar / Cantina, The Pepsi Marketplace) matches them.",
+   "sources": [
+    "https://climatepledgearena.com/seattle-kraken-and-oak-view-group-announce-partnership-with-molson-coors/",
+    "https://climatepledgearena.com/modelo/",
+    "https://climatepledgearena.com/pepsico-beverages-north-america-introduces-exciting-new-partnership-with-seattle-kraken-and-climate-pledge-arena/",
+    "https://www.climatepledgearena.com/food-beverage"
+   ]
+  },
+  "rotatingPrograms": [
+   "Chef’s Table (club, sections 01 & 14): rotating seasonal menus; the 2025-26 release says it rotates six times per season",
+   "The Pepsi Marketplace (section 124): rotating chef favorites",
+   "No formal named local-vendor program (comparable to Barclays \"Brooklyn Taste\" or Chase Center \"Taste Makers\") was found on CPA pages."
+  ],
+  "operationsNotes": [
+   "Four Amazon Just Walk Out stores (MollyD Burgers Market, Bristol Bay Wild Market, Starbucks Market, Uptown Market)",
+   "Mixed drinks can be carried around the arena (WA LCB pilot program)",
+   "Kraken Happy Hour: at Monday-Thursday games, $3 12oz draft beer and $3 hot dogs for the first hour after doors open; hot dogs at Pepsi Corner Market (Upper Concourse 1), Sound Pizza (Upper Concourse 1), Sound Bytes (Main Concourse LL2)",
+   "No single-use plastics; 75% of ingredients sourced within 300 miles (goal)"
+  ]
+ },
+ "stands": [
+  {
+   "id": "cpa-22520",
+   "name": "Runway Bar",
+   "concept": "Selection of wine and batch cocktails",
+   "level": "upper",
+   "levelInferred": true,
+   "sections": [
+    "109"
+   ],
+   "category": "drink",
+   "items": [
+    "Kraken Stormy Batch Cocktail"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-27349",
+   "name": "The Amex Lounge",
+   "concept": "A curated private lounge exclusively for Platinum Card® and Centurion® Members",
+   "level": "club",
+   "levelInferred": true,
+   "sections": [
+    "Space Needle Lounge"
+   ],
+   "category": "drink",
+   "items": [
+    "AMEX Signature"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-27345",
+   "name": "Sound Pizza Market",
+   "concept": "Housemade personal pizzas",
+   "level": "upper",
+   "levelInferred": true,
+   "sections": [
+    "116"
+   ],
+   "category": "food",
+   "items": [
+    "Salumi Pie",
+    "Mozzarella Sticks"
+   ],
+   "valueItems": [
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "Popcorn",
+    "Kelp Chips",
+    "Trail Mix",
+    "Gummy Bears"
+   ],
+   "equipment": [
+    "pizza oven",
+    "fryer (mozzarella sticks)",
+    "hot dog roller"
+   ],
+   "tags": [
+    "NA Beer",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-27343",
+   "name": "Ballard Pizza Market",
+   "concept": "Housemade pizza by the slice",
+   "level": "main",
+   "levelInferred": true,
+   "sections": [
+    "19"
+   ],
+   "category": "food",
+   "items": [
+    "Ballard Bridge"
+   ],
+   "valueItems": [
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "Popcorn",
+    "Kelp Chips",
+    "Trail Mix",
+    "Gummy Bears"
+   ],
+   "equipment": [
+    "pizza oven",
+    "pizza warmer (slices)"
+   ],
+   "tags": [
+    "NA Beer",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-24711",
+   "name": "Fisher Scones®",
+   "concept": "Fisher Fair Scones, smeared with whipped butter and local raspberry jam",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "24"
+   ],
+   "category": "food",
+   "items": [
+    "Strawberry Shortcake",
+    "Classic Fisher scone"
+   ],
+   "valueItems": [
+    "Single Scone"
+   ],
+   "equipment": [
+    "oven or warmer (scones)",
+    "cold assembly"
+   ],
+   "tags": [
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-24709",
+   "name": "The Pepsi Marketplace",
+   "concept": "Rotating Chef Favorites",
+   "level": "upper",
+   "levelInferred": true,
+   "sections": [
+    "124"
+   ],
+   "category": "food",
+   "items": [
+    "MollyD Single Burger"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "flat-top griddle (burger)",
+    "hot holding"
+   ],
+   "tags": [
+    "NA Beer",
+    "Vegan",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-18646",
+   "name": "Emerald City Smoothie",
+   "concept": "Superior taste and good health",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "19"
+   ],
+   "category": "food",
+   "items": [
+    "Fruity Supreme"
+   ],
+   "valueItems": [
+    "16oz Aquafina Water",
+    "12oz Soda"
+   ],
+   "equipment": [
+    "blenders",
+    "cold only"
+   ],
+   "tags": [
+    "Gluten Free Friendly",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-17954",
+   "name": "Dumpling House Market",
+   "concept": "Soup dumplings and fried rice crafted with rich and flavorful fillings",
+   "level": "main",
+   "levelInferred": true,
+   "sections": [
+    "04"
+   ],
+   "category": "food",
+   "items": [
+    "Chicken Soup Dumplings"
+   ],
+   "valueItems": [
+    "Fried Rice",
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "Popcorn",
+    "Kelp Chips",
+    "Trail Mix"
+   ],
+   "equipment": [
+    "steamer",
+    "wok / flat-top (fried rice)"
+   ],
+   "tags": [
+    "Gluten Free Friendly",
+    "NA Beer",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-17951",
+   "name": "Piroshky Piroshky",
+   "concept": "Bringing a unique taste of Eastern Europe to the Pacific Northwest",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "04"
+   ],
+   "category": "food",
+   "items": [
+    "Seattle Dog Piroshky",
+    "Beef & Potato Piroshky",
+    "Smoked Salmon Pate Piroshky",
+    "Potato & Cheese Piroshky"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "oven / warmer (baked piroshky)"
+   ],
+   "tags": [
+    "NA Beer",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-17947",
+   "name": "Fowl Language",
+   "concept": "Fan-favorite chicken tenders",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "04"
+   ],
+   "category": "food",
+   "items": [
+    "Buffalo Chicken Tenders"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "fryer"
+   ],
+   "tags": [
+    "NA Beer"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-17942",
+   "name": "¡No Güey!",
+   "concept": "A curated selection of Mexican-inspired favorites",
+   "level": "main",
+   "levelInferred": true,
+   "sections": [
+    "04"
+   ],
+   "category": "food",
+   "items": [
+    "Birria Tacos"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "flat-top griddle",
+    "hot holding (braised birria)"
+   ],
+   "tags": [
+    "NA Beer"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-13540",
+   "name": "The Cove",
+   "concept": "Wine by the glass or carafe. Two (2) valid IDs required for a carafe",
+   "level": "club",
+   "levelInferred": false,
+   "sections": [
+    "118"
+   ],
+   "category": "drink",
+   "items": [
+    "Charles Smith Kung Fu Girl Riesling"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails",
+    "NA Beer"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-11890",
+   "name": "Coors Light Landing Bar",
+   "concept": "Beer, cider, seltzers and batch cocktails",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "20"
+   ],
+   "category": "drink",
+   "items": [
+    "Coors Light"
+   ],
+   "valueItems": [
+    "Bavarian Pretzel",
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "1L Proudsource Water"
+   ],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-11888",
+   "name": "PNW Craft Beers – Club",
+   "concept": "20+ local PNW draft beers",
+   "level": "club",
+   "levelInferred": true,
+   "sections": [
+    "13",
+    "26"
+   ],
+   "category": "drink",
+   "items": [
+    "Seasonal Draft"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-11887",
+   "name": "Desserts",
+   "concept": "Fan favorite sweets and hot drinks",
+   "level": "upper",
+   "levelInferred": false,
+   "sections": [
+    "106"
+   ],
+   "category": "food",
+   "items": [
+    "Mister Softee soft serve"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "soft-serve machine",
+    "coffee brewer"
+   ],
+   "tags": [
+    "Gluten Free Friendly",
+    "Hot Coffee"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10785",
+   "name": "Starbucks Market",
+   "concept": "Selection of Starbucks products and snacks",
+   "level": "upper",
+   "levelInferred": false,
+   "sections": [
+    "111"
+   ],
+   "category": "food",
+   "items": [
+    "Starbucks Mocha Doubleshot"
+   ],
+   "valueItems": [
+    "Popcorn",
+    "Kelp Chips",
+    "Trail Mix",
+    "Gummy Bears",
+    "Pretzel Sticks",
+    "16oz Aquafina Water"
+   ],
+   "equipment": [
+    "grab-and-go coolers (JWO)",
+    "cold only"
+   ],
+   "tags": [
+    "JWO"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10784",
+   "name": "Uptown Market",
+   "concept": "Selection of beverages and snacks",
+   "level": "upper",
+   "levelInferred": false,
+   "sections": [
+    "104"
+   ],
+   "category": "food",
+   "items": [
+    "Modelo Especial"
+   ],
+   "valueItems": [
+    "Popcorn",
+    "Kelp Chips",
+    "Trail Mix",
+    "Gummy Bears",
+    "Pretzel Sticks",
+    "16oz Aquafina Water"
+   ],
+   "equipment": [
+    "grab-and-go coolers (JWO)",
+    "cold only",
+    "beer cooler"
+   ],
+   "tags": [
+    "JWO"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10783",
+   "name": "Big Chicken Market",
+   "concept": "Best chicken sandwiches with the BIGGEST flavor",
+   "level": "both",
+   "levelInferred": false,
+   "sections": [
+    "103",
+    "22"
+   ],
+   "category": "food",
+   "items": [
+    "Heat Check",
+    "Fries",
+    "Popcorn"
+   ],
+   "valueItems": [
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "Kelp Chips",
+    "Trail Mix",
+    "Gummy Bears",
+    "Pretzel Sticks"
+   ],
+   "equipment": [
+    "fryer",
+    "popcorn machine"
+   ],
+   "tags": [
+    "NA Beer"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10756",
+   "name": "Modelo Bar",
+   "concept": "Beer, cider, seltzers and batch cocktails",
+   "level": "upper",
+   "levelInferred": false,
+   "sections": [
+    "116"
+   ],
+   "category": "drink",
+   "items": [
+    "Modelo"
+   ],
+   "valueItems": [
+    "20oz Corona Premier Draft",
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "1L Proudsource Water"
+   ],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10742",
+   "name": "Charles Smith Wines",
+   "concept": "Wine by the glass or carafe. Two (2) valid IDs are required for a carafe",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "04"
+   ],
+   "category": "drink",
+   "items": [
+    "Charles Smith Kung Fu Girl Riesling"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10740",
+   "name": "Charles Smith Wines – Club",
+   "concept": "Wine by the glass or carafe. Two (2) valid IDs required for a carafe",
+   "level": "club",
+   "levelInferred": true,
+   "sections": [
+    "13",
+    "26"
+   ],
+   "category": "drink",
+   "items": [
+    "Charles Smith Kung Fu Girl Riesling"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10738",
+   "name": "The Rain Barrel Whiskey Bar",
+   "concept": "20+ whiskeys from all over the world",
+   "level": "club",
+   "levelInferred": false,
+   "sections": [
+    "123"
+   ],
+   "category": "drink",
+   "items": [
+    "House Cocktails - Purple Haze"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10736",
+   "name": "Sea & Sound",
+   "concept": "Elevated fan favorites",
+   "level": "club",
+   "levelInferred": true,
+   "sections": [
+    "01",
+    "14"
+   ],
+   "category": "food",
+   "items": [
+    "Crab Roll"
+   ],
+   "valueItems": [
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "12oz Soda",
+    "Poppi",
+    "12oz Gatorade",
+    "1L Proudsource Water"
+   ],
+   "equipment": [
+    "cold prep (crab roll)",
+    "griddle (likely, roll toasting)"
+   ],
+   "tags": [
+    "Gluten Free Friendly"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10735",
+   "name": "Coors Light Center Ice Bar",
+   "concept": "Beer, cider, seltzers and batch cocktails",
+   "level": "upper",
+   "levelInferred": false,
+   "sections": [
+    "101"
+   ],
+   "category": "drink",
+   "items": [
+    "Coors Light"
+   ],
+   "valueItems": [
+    "Bavarian Pretzel",
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "1L Proudsource Water"
+   ],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10733",
+   "name": "Modelo Cantina",
+   "concept": "Beer, cider, seltzers and batch cocktails",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "08"
+   ],
+   "category": "drink",
+   "items": [
+    "Modelo"
+   ],
+   "valueItems": [
+    "Bavarian Pretzel",
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "1L Proudsource Water"
+   ],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10732",
+   "name": "2 Towns Ciderhouse + Craftwell Cocktails Bar",
+   "concept": "Local ciders and craft cocktails",
+   "level": "upper",
+   "levelInferred": false,
+   "sections": [
+    "125"
+   ],
+   "category": "drink",
+   "items": [
+    "Craftwell Cocktails' Hibiscus Lemonade Draft"
+   ],
+   "valueItems": [
+    "20oz Rotating Draft Cider",
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "1L Proudsource Water"
+   ],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10729",
+   "name": "Rum Bar",
+   "concept": "Beer, cider, seltzers and batch cocktails",
+   "level": "upper",
+   "levelInferred": true,
+   "sections": [
+    "114"
+   ],
+   "category": "drink",
+   "items": [
+    "Seasonal Batch Cocktail"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10674",
+   "name": "Jack Daniel’s Bar",
+   "concept": "Full service bar featuring premium mixed cocktails",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "24"
+   ],
+   "category": "drink",
+   "items": [
+    "Jack Daniel's Lemonade Draft Cocktail"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10648",
+   "name": "Space Needle Lounge",
+   "concept": "Premium mixed cocktails and a full service bar",
+   "level": "club",
+   "levelInferred": false,
+   "sections": [
+    "Space Needle Lounge"
+   ],
+   "category": "drink",
+   "items": [
+    "House Cocktails - Purple Haze"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10626",
+   "name": "Bar Northwest",
+   "concept": "Full service bar featuring premium mixed cocktails.",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "17"
+   ],
+   "category": "drink",
+   "items": [
+    "House Cocktails - Purple Haze"
+   ],
+   "valueItems": [
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "1L Proudsource Water"
+   ],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10623",
+   "name": "Symetra Club Bar",
+   "concept": "Full service bar featuring premium mixed cocktails",
+   "level": "club",
+   "levelInferred": false,
+   "sections": [
+    "01"
+   ],
+   "category": "drink",
+   "items": [
+    "House Cocktails - Purple Haze"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10566",
+   "name": "Sound Bytes Market",
+   "concept": "Traditional arena fare",
+   "level": "main",
+   "levelInferred": true,
+   "sections": [
+    "11"
+   ],
+   "category": "food",
+   "items": [
+    "Potato Skins",
+    "French Fries",
+    "Royal Ranch Cheese Steak"
+   ],
+   "valueItems": [
+    "All Beef Hot Dog",
+    "Fries",
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "Popcorn",
+    "Kelp Chips"
+   ],
+   "equipment": [
+    "fryer",
+    "hot dog roller",
+    "flat-top griddle (cheesesteak)"
+   ],
+   "tags": [
+    "Gluten Free Friendly",
+    "NA Beer"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10514",
+   "name": "Bristol Bay Wild Market",
+   "concept": "Experience the best in Alaska seafood",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "07"
+   ],
+   "category": "food",
+   "items": [
+    "Salmon Dip with Kettle Chips",
+    "Garlic Fries",
+    "Sockeye Salmon Bowl"
+   ],
+   "valueItems": [
+    "Salmon Dip",
+    "Popcorn",
+    "Kelp Chips",
+    "Trail Mix",
+    "Gummy Bears",
+    "Pretzel Sticks"
+   ],
+   "equipment": [
+    "grab-and-go coolers (JWO)",
+    "fryer (garlic fries)",
+    "cold prep"
+   ],
+   "tags": [
+    "JWO",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10513",
+   "name": "Ballard Pizza Market – Club",
+   "concept": "Housemade personal pizzas",
+   "level": "club",
+   "levelInferred": true,
+   "sections": [
+    "118",
+    "15",
+    "26"
+   ],
+   "category": "food",
+   "items": [
+    "Ballard Bridge"
+   ],
+   "valueItems": [
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "12oz Soda",
+    "Poppi",
+    "12oz Gatorade",
+    "1L Proudsource Water"
+   ],
+   "equipment": [
+    "pizza oven"
+   ],
+   "tags": [
+    "Vegetarian"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10512",
+   "name": "Mercer St Mac + BBQ",
+   "concept": "Classic mac + cheese made with local favorite, Beecher’s Cheese",
+   "level": "both",
+   "levelInferred": false,
+   "sections": [
+    "107",
+    "24"
+   ],
+   "category": "food",
+   "items": [
+    "Beechers Mac + Cheese"
+   ],
+   "valueItems": [
+    "Small Mac & Cheese"
+   ],
+   "equipment": [
+    "hot holding / steam wells"
+   ],
+   "tags": [
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10511",
+   "name": "1st Ave Nachos",
+   "concept": "Nachos with your choice of protein, including vegetarian option with IMPOSSIBLE® beef",
+   "level": "both",
+   "levelInferred": false,
+   "sections": [
+    "04",
+    "108"
+   ],
+   "category": "food",
+   "items": [
+    "Nachos with Chili Lime Carnitas",
+    "Loaded Birria Nachos"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "hot holding / cheese warmer",
+    "steam wells"
+   ],
+   "tags": [
+    "Gluten Free Friendly",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10510",
+   "name": "Coors Light Mountain Market",
+   "concept": "Traditional arena fare",
+   "level": "upper",
+   "levelInferred": true,
+   "sections": [
+    "112"
+   ],
+   "category": "food",
+   "items": [
+    "5th Line Cheeseburger"
+   ],
+   "valueItems": [
+    "Fries",
+    "Onion Rings",
+    "All Beef Hot Dog",
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "Popcorn"
+   ],
+   "equipment": [
+    "flat-top griddle",
+    "fryer",
+    "hot dog roller"
+   ],
+   "tags": [
+    "NA Beer"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10509",
+   "name": "Waypoint",
+   "concept": "Featuring an assortment of the arena’s most favorite items",
+   "level": "club",
+   "levelInferred": true,
+   "sections": [
+    "120"
+   ],
+   "category": "food",
+   "items": [
+    "Shrimp Po Boy"
+   ],
+   "valueItems": [
+    "Potato Skins",
+    "All Beef Hot Dog",
+    "Mozzarella Sticks",
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "12oz Soda"
+   ],
+   "equipment": [
+    "fryer",
+    "hot dog roller"
+   ],
+   "tags": [
+    "Vegetarian"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10507",
+   "name": "Local Lolli",
+   "concept": "Handmade, local sweets + Mister Softee soft serve",
+   "level": "club",
+   "levelInferred": false,
+   "sections": [
+    "123",
+    "13",
+    "24",
+    "26"
+   ],
+   "category": "food",
+   "items": [
+    "Mister Softee Soft Serve"
+   ],
+   "valueItems": [
+    "Cookies",
+    "Kids Cone"
+   ],
+   "equipment": [
+    "soft-serve machine",
+    "coffee brewer"
+   ],
+   "tags": [
+    "Gluten Free Friendly",
+    "Hot Coffee",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10505",
+   "name": "Poké",
+   "concept": "Healthy and house made poké bowls",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "04"
+   ],
+   "category": "food",
+   "items": [
+    "Poké Nachos",
+    "Spam Musubi"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "cold prep only"
+   ],
+   "tags": [
+    "Gluten Free Friendly"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10502",
+   "name": "Bristol Bay",
+   "concept": "Seattle’s favorite sustainable seafood",
+   "level": "upper",
+   "levelInferred": true,
+   "sections": [
+    "116"
+   ],
+   "category": "food",
+   "items": [
+    "Salmon Dip with Garlic Knots"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "cold prep (dip)",
+    "convection oven (garlic knots)"
+   ],
+   "tags": [],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-10078",
+   "name": "WaFd Bank Club Bar",
+   "concept": "Full service bar featuring premium mixed cocktails",
+   "level": "club",
+   "levelInferred": false,
+   "sections": [
+    "14"
+   ],
+   "category": "drink",
+   "items": [
+    "House Cocktails - Purple Haze"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "bar: draft beer / batch cocktails / wine"
+   ],
+   "tags": [
+    "Cocktails"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-1056",
+   "name": "Chef’s Table",
+   "concept": "Rotating seasonal menus including vegan and vegetarian options during select dates",
+   "level": "club",
+   "levelInferred": false,
+   "sections": [
+    "01",
+    "14"
+   ],
+   "category": "food",
+   "items": [
+    "Rotating Special"
+   ],
+   "valueItems": [
+    "Rotating Value Item"
+   ],
+   "equipment": [
+    "unknown (rotating menu)"
+   ],
+   "tags": [
+    "Vegan",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": true,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-1053",
+   "name": "MollyD Burgers Market",
+   "concept": "Smash burgers by Executive Chef Molly DeMers",
+   "level": "main",
+   "levelInferred": false,
+   "sections": [
+    "08"
+   ],
+   "category": "food",
+   "items": [
+    "Tallow Fries",
+    "Crispy Peanut Butter N Jelly Sandwich (2025-26)"
+   ],
+   "valueItems": [
+    "Popcorn",
+    "Kelp Chips",
+    "Trail Mix",
+    "Gummy Bears",
+    "Pretzel Sticks",
+    "16oz Aquafina Water"
+   ],
+   "equipment": [
+    "flat-top griddle (smash burgers)",
+    "fryer (tallow fries)",
+    "grab-and-go coolers (JWO)"
+   ],
+   "tags": [
+    "JWO"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-1048",
+   "name": "IMPOSSIBLE® Test Kitchen",
+   "concept": "Vegetarian and plant-based options with a kick!",
+   "level": "main",
+   "levelInferred": true,
+   "sections": [
+    "11"
+   ],
+   "category": "food",
+   "items": [
+    "Korean BBQ IMPOSSIBLE® Beef Bowl",
+    "Impossible Chili with cornbread (2025-26)",
+    "Impossible patty melt on Franz rye (new 2026-27)",
+    "Impossible meatball sub (new 2026-27)"
+   ],
+   "valueItems": [],
+   "equipment": [
+    "flat-top griddle",
+    "soup kettle",
+    "hot holding"
+   ],
+   "tags": [
+    "Gluten Free Friendly",
+    "Vegan",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-1003",
+   "name": "Mister Softee",
+   "concept": "Soft serve ice cream",
+   "level": "both",
+   "levelInferred": false,
+   "sections": [
+    "106",
+    "11",
+    "125"
+   ],
+   "category": "food",
+   "items": [
+    "Souvenir Soft Serve"
+   ],
+   "valueItems": [
+    "Kids Cone",
+    "Cookies"
+   ],
+   "equipment": [
+    "soft-serve machine"
+   ],
+   "tags": [
+    "Gluten Free Friendly",
+    "Vegetarian"
+   ],
+   "clubTicketRequired": false,
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-x1",
+   "name": "District 206",
+   "concept": "Food hall/zone on Main Concourse near Section 4 (map shows ¡No Güey!, Piroshky Piroshky and a third logo inside)",
+   "level": "main",
+   "levelInferred": true,
+   "sections": [
+    "04"
+   ],
+   "category": "food",
+   "items": [],
+   "valueItems": [
+    "Taquitos",
+    "Chips & Salsa",
+    "Chocolate Piroshky",
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "Popcorn"
+   ],
+   "equipment": [
+    "fryer (taquitos, likely)",
+    "hot holding"
+   ],
+   "tags": [],
+   "clubTicketRequired": false,
+   "source": "https://www.nhl.com/kraken/arena/food-and-beverage"
+  },
+  {
+   "id": "cpa-x2",
+   "name": "Top Dog",
+   "concept": "Hot dog stand (Kraken value menu)",
+   "level": "main",
+   "levelInferred": true,
+   "sections": [
+    "04"
+   ],
+   "category": "food",
+   "items": [],
+   "valueItems": [
+    "All Beef Hot Dog",
+    "16oz Aquafina Water",
+    "12oz Soda"
+   ],
+   "equipment": [
+    "hot dog roller / steamer"
+   ],
+   "tags": [],
+   "clubTicketRequired": false,
+   "source": "https://www.nhl.com/kraken/arena/food-and-beverage"
+  },
+  {
+   "id": "cpa-x3",
+   "name": "T Bars",
+   "concept": "Club bars (Kraken value menu)",
+   "level": "club",
+   "levelInferred": true,
+   "sections": [
+    "15",
+    "26"
+   ],
+   "category": "drink",
+   "items": [],
+   "valueItems": [
+    "Coors Banquet Beer",
+    "Georgetown Tavern Beer",
+    "1L Proudsource Water"
+   ],
+   "equipment": [
+    "bar: draft beer"
+   ],
+   "tags": [],
+   "clubTicketRequired": true,
+   "source": "https://www.nhl.com/kraken/arena/food-and-beverage"
+  }
+ ],
+ "carts": [
+  {
+   "id": "cpa-11891",
+   "name": "Mt Baker Beverage",
+   "level": "main",
+   "sections": [
+    "04",
+    "12",
+    "17"
+   ],
+   "items": [],
+   "note": "Present in the WordPress dining_stands data (type Drinks only) but has no public card on the food-beverage page; treated as a beverage point / possible portable or duplicate entry.",
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-11889",
+   "name": "PNW Crafts Beers",
+   "level": "main",
+   "sections": [
+    "16",
+    "25"
+   ],
+   "items": [],
+   "note": "Present in the WordPress dining_stands data (type Drinks only) but has no public card on the food-beverage page; treated as a beverage point / possible portable or duplicate entry.",
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-29365",
+   "name": "PNW Craft Beers",
+   "level": "main",
+   "sections": [
+    "13",
+    "26"
+   ],
+   "items": [],
+   "note": "Present in the WordPress dining_stands data (type Drinks only) but has no public card on the food-beverage page; treated as a beverage point / possible portable or duplicate entry.",
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-29364",
+   "name": "Charles Smith Wines",
+   "level": "main",
+   "sections": [
+    "13",
+    "26"
+   ],
+   "items": [],
+   "note": "Present in the WordPress dining_stands data (type Drinks only) but has no public card on the food-beverage page; treated as a beverage point / possible portable or duplicate entry.",
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-29362",
+   "name": "Kraken Rum Bar",
+   "level": "upper",
+   "sections": [
+    "114"
+   ],
+   "items": [],
+   "note": "Present in the WordPress dining_stands data (type Drinks only) but has no public card on the food-beverage page; treated as a beverage point / possible portable or duplicate entry.",
+   "source": "https://www.climatepledgearena.com/food-beverage"
+  },
+  {
+   "id": "cpa-cart-starbucks",
+   "name": "Starbucks Cart",
+   "level": "main",
+   "sections": [
+    "04"
+   ],
+   "items": [
+    "Hot Drip Coffee",
+    "Hot Tea",
+    "Hot Chocolate",
+    "Cookies"
+   ],
+   "note": "",
+   "source": "https://www.nhl.com/kraken/arena/food-and-beverage"
+  },
+  {
+   "id": "cpa-cart-bavarian-meats",
+   "name": "Bavarian Meats Cart",
+   "level": null,
+   "sections": [],
+   "items": [
+    "The Arena Dog (Royal Ranch braised short rib, crispy onions, horseradish crème, hoagie roll)"
+   ],
+   "note": "2025-26 season press release; not confirmed on 2026-27 pages; location not published.",
+   "source": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-debut-expanded-menus-and-local-flavors-ahead-of-2025-26-seattle-kraken-season/"
+  }
+ ],
+ "merch": [
+  {
+   "id": "cpa-merch-team-store",
+   "name": "Team Store (Kraken, Torrent and Storm merchandise)",
+   "level": "LL2 – Main Concourse",
+   "location": "Enter at ENTRY 1 (southwest corner), go down the escalator; map places it near sections 09-11",
+   "hours": "Kraken, Torrent and Storm game days, when doors open",
+   "source": [
+    "https://www.climatepledgearena.com/team-stores/",
+    "https://www.climatepledgearena.com/arena-maps/"
+   ]
+  },
+  {
+   "id": "cpa-merch-armory",
+   "name": "Team Store - Seattle Center Armory (off-site, across campus)",
+   "level": "off-site",
+   "location": "Seattle Center Armory Food & Event Hall",
+   "hours": "10AM-6PM daily; 10AM-7PM on Kraken, Torrent and Storm home games",
+   "source": [
+    "https://www.climatepledgearena.com/team-stores/"
+   ]
+  },
+  {
+   "id": "cpa-merch-ll2-north",
+   "name": "Merch points (2 icons) on LL2 north concourse",
+   "level": "LL2 – Main Concourse",
+   "location": "Map icons near sections 19-22 (by Ballard Pizza / Coors Light Landing)",
+   "source": [
+    "https://www.climatepledgearena.com/arena-maps/"
+   ],
+   "note": "From map icons; no names published."
+  },
+  {
+   "id": "cpa-merch-upper-east",
+   "name": "Merch point on Upper Concourse",
+   "level": "1 – Upper Concourse",
+   "location": "Map icon near Entry 7 / section 105",
+   "source": [
+    "https://www.climatepledgearena.com/arena-maps/"
+   ],
+   "note": "From map icon; no name published."
+  },
+  {
+   "id": "cpa-merch-ll1",
+   "name": "Merch points on LL1 (Kraken games only)",
+   "level": "LL1 – Pitchbook Suites",
+   "location": "Map icons near sections 118 and 123",
+   "source": [
+    "https://www.climatepledgearena.com/arena-maps/"
+   ],
+   "note": "Map legend: Merch (Kraken Games Only)."
+  }
+ ],
+ "events": [
+  {
+   "id": "mana-2026-10-17-20-30",
+   "title": "MANÁ",
+   "date": "2026-10-17",
+   "start": "20:30",
+   "kind": "concert",
+   "family": false,
+   "headliner": "MANÁ",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/mana-26/"
+  },
+  {
+   "id": "seattle-kraken-vs-detroit-red-wings-2026-10-20-18-40",
+   "title": "Seattle Kraken vs. Detroit Red Wings",
+   "date": "2026-10-20",
+   "start": "18:40",
+   "kind": "game",
+   "family": false,
+   "headliner": "Seattle Kraken vs. Detroit Red Wings",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-detroit-red-wings-3/"
+  },
+  {
+   "id": "seattle-kraken-vs-utah-mammoth-2026-10-22-19-00",
+   "title": "Seattle Kraken vs. Utah Mammoth",
+   "date": "2026-10-22",
+   "start": "19:00",
+   "kind": "game",
+   "family": false,
+   "headliner": "Seattle Kraken vs. Utah Mammoth",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-utah-mammoth-10-22-2026/"
+  },
+  {
+   "id": "phoebe-bridgers-2026-10-23-19-30",
+   "title": "Phoebe Bridgers",
+   "date": "2026-10-23",
+   "start": "19:30",
+   "kind": "concert",
+   "family": false,
+   "headliner": "Phoebe Bridgers",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/phoebe-bridgers-26/"
+  },
+  {
+   "id": "seattle-kraken-vs-minnesota-wild-2026-10-24-19-00",
+   "title": "Seattle Kraken vs. Minnesota Wild",
+   "date": "2026-10-24",
+   "start": "19:00",
+   "kind": "game",
+   "family": false,
+   "headliner": "Seattle Kraken vs. Minnesota Wild",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-minnesota-wild-4/"
+  },
+  {
+   "id": "cancelled-k-era-fest-2026-taemin-2026-10-25-19-00",
+   "title": "CANCELLED: K-ERA Fest 2026: TAEMIN",
+   "date": "2026-10-25",
+   "start": "19:00",
+   "kind": "concert",
+   "family": false,
+   "headliner": "K-ERA Fest 2026: TAEMIN",
+   "cancelled": true,
+   "source": "https://climatepledgearena.com/event/taemin-k-era-fest-26/"
+  },
+  {
+   "id": "kacey-musgraves-2026-10-26-19-30",
+   "title": "Kacey Musgraves",
+   "date": "2026-10-26",
+   "start": "19:30",
+   "kind": "concert",
+   "family": false,
+   "headliner": "Kacey Musgraves",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/kacey-musgraves-26/"
+  },
+  {
+   "id": "kacey-musgraves-2026-10-27-19-30",
+   "title": "Kacey Musgraves",
+   "date": "2026-10-27",
+   "start": "19:30",
+   "kind": "concert",
+   "family": false,
+   "headliner": "Kacey Musgraves",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/kacey-musgraves/"
+  },
+  {
+   "id": "seattle-kraken-vs-toronto-maple-leafs-2026-10-28-19-00",
+   "title": "Seattle Kraken vs. Toronto Maple Leafs",
+   "date": "2026-10-28",
+   "start": "19:00",
+   "kind": "game",
+   "family": false,
+   "headliner": "Seattle Kraken vs. Toronto Maple Leafs",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-toronto-maple-leafs-3/"
+  },
+  {
+   "id": "beabadoobee-2026-10-29-20-00",
+   "title": "beabadoobee",
+   "date": "2026-10-29",
+   "start": "20:00",
+   "kind": "concert",
+   "family": false,
+   "headliner": "beabadoobee",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/beabadoobee-26/"
+  },
+  {
+   "id": "gorillaz-2026-10-31-19-30",
+   "title": "Gorillaz",
+   "date": "2026-10-31",
+   "start": "19:30",
+   "kind": "concert",
+   "family": false,
+   "headliner": "Gorillaz",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/gorillaz-26/"
+  },
+  {
+   "id": "bryson-tiller-2026-11-01-19-30",
+   "title": "Bryson Tiller",
+   "date": "2026-11-01",
+   "start": "19:30",
+   "kind": "concert",
+   "family": false,
+   "headliner": "Bryson Tiller",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/bryson-tiller-26/"
+  },
+  {
+   "id": "seattle-kraken-vs-calgary-flames-2026-11-04-19-00",
+   "title": "Seattle Kraken vs. Calgary Flames",
+   "date": "2026-11-04",
+   "start": "19:00",
+   "kind": "game",
+   "family": false,
+   "headliner": "Seattle Kraken vs. Calgary Flames",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-calgary-flames-11-04-2026/"
+  },
+  {
+   "id": "teddy-swims-2026-11-05-19-00",
+   "title": "Teddy Swims",
+   "date": "2026-11-05",
+   "start": "19:00",
+   "kind": "concert",
+   "family": false,
+   "headliner": "Teddy Swims",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/teddy-swims-26/"
+  },
+  {
+   "id": "the-smashing-pumpkins-2026-11-06-20-00",
+   "title": "The Smashing Pumpkins",
+   "date": "2026-11-06",
+   "start": "20:00",
+   "kind": "concert",
+   "family": false,
+   "headliner": "The Smashing Pumpkins",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/the-smashing-pumpkins-26/"
+  },
+  {
+   "id": "seattle-kraken-vs-new-york-rangers-2026-11-07-14-00",
+   "title": "Seattle Kraken vs. New York Rangers",
+   "date": "2026-11-07",
+   "start": "14:00",
+   "kind": "game",
+   "family": false,
+   "headliner": "Seattle Kraken vs. New York Rangers",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-new-york-rangers-3/"
+  },
+  {
+   "id": "ms-lauryn-hill-wyclef-jean-celebrating-30-years-of-fugees-the-score-2026-11-10-20-00",
+   "title": "Ms. Lauryn Hill & Wyclef Jean: Celebrating 30 years of Fugees’ The Score",
+   "date": "2026-11-10",
+   "start": "20:00",
+   "kind": "concert",
+   "family": false,
+   "headliner": "Ms. Lauryn Hill & Wyclef Jean: Celebrating 30 years of Fugees’ The Score",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/ms-lauryn-hill-wyclef-jean-26/"
+  },
+  {
+   "id": "garth-brooks-2026-11-13-20-00",
+   "title": "Garth Brooks",
+   "date": "2026-11-13",
+   "start": "20:00",
+   "kind": "concert",
+   "family": false,
+   "headliner": "Garth Brooks",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/garth-brooks-26-1/"
+  },
+  {
+   "id": "garth-brooks-2026-11-14-20-00",
+   "title": "Garth Brooks",
+   "date": "2026-11-14",
+   "start": "20:00",
+   "kind": "concert",
+   "family": false,
+   "headliner": "Garth Brooks",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/garth-brooks-26-2/"
+  },
+  {
+   "id": "katseye-2026-11-17-20-00",
+   "title": "KATSEYE",
+   "date": "2026-11-17",
+   "start": "20:00",
+   "kind": "concert",
+   "family": false,
+   "headliner": "KATSEYE",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/katseye-26/"
+  },
+  {
+   "id": "seattle-kraken-vs-vancouver-canucks-2026-11-19-18-40",
+   "title": "Seattle Kraken vs. Vancouver Canucks",
+   "date": "2026-11-19",
+   "start": "18:40",
+   "kind": "game",
+   "family": false,
+   "headliner": "Seattle Kraken vs. Vancouver Canucks",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-vancouver-canucks-6/"
+  },
+  {
+   "id": "seattle-kraken-vs-anaheim-ducks-2026-11-23-18-40",
+   "title": "Seattle Kraken vs. Anaheim Ducks",
+   "date": "2026-11-23",
+   "start": "18:40",
+   "kind": "game",
+   "family": false,
+   "headliner": "Seattle Kraken vs. Anaheim Ducks",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-anaheim-ducks-11-23-2026/"
+  },
+  {
+   "id": "seattle-kraken-vs-chicago-blackhawks-2026-11-25-18-40",
+   "title": "Seattle Kraken vs. Chicago Blackhawks",
+   "date": "2026-11-25",
+   "start": "18:40",
+   "kind": "game",
+   "family": true,
+   "headliner": "Seattle Kraken vs. Chicago Blackhawks",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-chicago-blackhawks-11-25-2026/"
+  },
+  {
+   "id": "seattle-kraken-vs-edmonton-oilers-2026-11-28-19-00",
+   "title": "Seattle Kraken vs. Edmonton Oilers",
+   "date": "2026-11-28",
+   "start": "19:00",
+   "kind": "game",
+   "family": false,
+   "headliner": "Seattle Kraken vs. Edmonton Oilers",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-edmonton-oilers-5/"
+  },
+  {
+   "id": "trans-siberian-orchestra-2026-11-29-15-00",
+   "title": "Trans-Siberian Orchestra",
+   "date": "2026-11-29",
+   "start": "15:00",
+   "kind": "concert",
+   "family": true,
+   "headliner": "Trans-Siberian Orchestra",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/trans-siberian-orchestra-26/"
+  },
+  {
+   "id": "trans-siberian-orchestra-2026-11-29-19-30",
+   "title": "Trans-Siberian Orchestra",
+   "date": "2026-11-29",
+   "start": "19:30",
+   "kind": "concert",
+   "family": true,
+   "headliner": "Trans-Siberian Orchestra",
+   "cancelled": false,
+   "source": "https://climatepledgearena.com/event/trans-siberian-orchestra-26-1/"
+  }
+ ]
+}

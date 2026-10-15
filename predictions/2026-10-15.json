@@ -1,0 +1,526 @@
+{
+ "registeredAt": "2026-10-15T09:17:55.818Z",
+ "model": "lib/deep (planner.ts, economics.ts defaults)",
+ "events": [
+  {
+   "id": "mana-2026-10-17-20-30",
+   "title": "MANÁ",
+   "date": "2026-10-17",
+   "start": "20:30",
+   "source": "https://climatepledgearena.com/event/mana-26/",
+   "attendance": 15824,
+   "tasteSignal": "none (no Qloo key yet); a second dated file follows once live calls run",
+   "flexPlan": [
+    {
+     "location": "Chef's Table (club, sec 01 & 14)",
+     "concept": "Piroshky Piroshky",
+     "tiedWith": [
+      "fisher-scones",
+      "beechers",
+      "bristol-bay",
+      "poke",
+      "dumpling-house",
+      "no-guey",
+      "mollyd",
+      "impossible",
+      "sea-and-sound"
+     ],
+     "expectedOrders": 116,
+     "range80": [
+      80,
+      151
+     ],
+     "par": 131
+    },
+    {
+     "location": "The Pepsi Marketplace feature (sec 124)",
+     "concept": "MollyD Burgers",
+     "tiedWith": [],
+     "expectedOrders": 312,
+     "range80": [
+      225,
+      414
+     ],
+     "par": 350
+    },
+    {
+     "location": "Portable, main concourse sec 04",
+     "concept": "Starbucks cart",
+     "tiedWith": [],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 146
+    },
+    {
+     "location": "Portable, main concourse sec 12",
+     "concept": "Bavarian Meats",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bristol-bay",
+      "poke"
+     ],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 115
+    },
+    {
+     "location": "Portable, main concourse sec 16/25",
+     "concept": "Bristol Bay (salmon dip)",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bavarian-meats",
+      "poke"
+     ],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 115
+    },
+    {
+     "location": "Portable, upper concourse sec 114",
+     "concept": "Local Lolli sweets",
+     "tiedWith": [],
+     "expectedOrders": 151,
+     "range80": [
+      111,
+      208
+     ],
+     "par": 214
+    }
+   ],
+   "busiestWindow": "Changeover",
+   "claims": [
+    "The busiest minutes for food stands will be \"Changeover\", not doors-to-opener, measured as orders per minute.",
+    "Fixed food stands on the main concourse will each serve about 206 food orders.",
+    "Total food orders across fixed stands ≈ 5,778."
+   ],
+   "howToCheck": "Venue or Delaware North POS counts by stand and 15-minute bucket; failing that, queue lengths timed by an attendee at two stands per window."
+  },
+  {
+   "id": "seattle-kraken-vs-detroit-red-wings-2026-10-20-18-40",
+   "title": "Seattle Kraken vs. Detroit Red Wings",
+   "date": "2026-10-20",
+   "start": "18:40",
+   "source": "https://climatepledgearena.com/event/seattle-kraken-vs-detroit-red-wings-3/",
+   "attendance": 15732,
+   "tasteSignal": "none (no Qloo key yet); a second dated file follows once live calls run",
+   "flexPlan": [
+    {
+     "location": "Chef's Table (club, sec 01 & 14)",
+     "concept": "Mercer St Mac + BBQ (Beecher's)",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bristol-bay",
+      "poke",
+      "dumpling-house",
+      "no-guey",
+      "mollyd",
+      "impossible",
+      "sea-and-sound"
+     ],
+     "expectedOrders": 115,
+     "range80": [
+      79,
+      151
+     ],
+     "par": 130
+    },
+    {
+     "location": "The Pepsi Marketplace feature (sec 124)",
+     "concept": "MollyD Burgers",
+     "tiedWith": [],
+     "expectedOrders": 314,
+     "range80": [
+      224,
+      411
+     ],
+     "par": 353
+    },
+    {
+     "location": "Portable, main concourse sec 04",
+     "concept": "Starbucks cart",
+     "tiedWith": [],
+     "expectedOrders": 102,
+     "range80": [
+      70,
+      135
+     ],
+     "par": 145
+    },
+    {
+     "location": "Portable, main concourse sec 12",
+     "concept": "Bavarian Meats",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bristol-bay",
+      "poke"
+     ],
+     "expectedOrders": 102,
+     "range80": [
+      70,
+      135
+     ],
+     "par": 115
+    },
+    {
+     "location": "Portable, main concourse sec 16/25",
+     "concept": "Poké",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bristol-bay",
+      "bavarian-meats"
+     ],
+     "expectedOrders": 102,
+     "range80": [
+      70,
+      135
+     ],
+     "par": 115
+    },
+    {
+     "location": "Portable, upper concourse sec 114",
+     "concept": "Local Lolli sweets",
+     "tiedWith": [],
+     "expectedOrders": 154,
+     "range80": [
+      110,
+      207
+     ],
+     "par": 218
+    }
+   ],
+   "busiestWindow": "1st intermission",
+   "claims": [
+    "The busiest minutes for food stands will be \"1st intermission\", not doors-to-puck-drop, measured as orders per minute.",
+    "Fixed food stands on the main concourse will each serve about 205 food orders.",
+    "Total food orders across fixed stands ≈ 5,779."
+   ],
+   "howToCheck": "Venue or Delaware North POS counts by stand and 15-minute bucket; failing that, queue lengths timed by an attendee at two stands per window."
+  },
+  {
+   "id": "kacey-musgraves-2026-10-26-19-30",
+   "title": "Kacey Musgraves",
+   "date": "2026-10-26",
+   "start": "19:30",
+   "source": "https://climatepledgearena.com/event/kacey-musgraves-26/",
+   "attendance": 15824,
+   "tasteSignal": "none (no Qloo key yet); a second dated file follows once live calls run",
+   "flexPlan": [
+    {
+     "location": "Chef's Table (club, sec 01 & 14)",
+     "concept": "Piroshky Piroshky",
+     "tiedWith": [
+      "fisher-scones",
+      "beechers",
+      "bristol-bay",
+      "poke",
+      "dumpling-house",
+      "no-guey",
+      "mollyd",
+      "impossible",
+      "sea-and-sound"
+     ],
+     "expectedOrders": 116,
+     "range80": [
+      80,
+      151
+     ],
+     "par": 131
+    },
+    {
+     "location": "The Pepsi Marketplace feature (sec 124)",
+     "concept": "MollyD Burgers",
+     "tiedWith": [],
+     "expectedOrders": 312,
+     "range80": [
+      225,
+      414
+     ],
+     "par": 350
+    },
+    {
+     "location": "Portable, main concourse sec 04",
+     "concept": "Starbucks cart",
+     "tiedWith": [],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 146
+    },
+    {
+     "location": "Portable, main concourse sec 12",
+     "concept": "Bavarian Meats",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bristol-bay",
+      "poke"
+     ],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 115
+    },
+    {
+     "location": "Portable, main concourse sec 16/25",
+     "concept": "Bristol Bay (salmon dip)",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bavarian-meats",
+      "poke"
+     ],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 115
+    },
+    {
+     "location": "Portable, upper concourse sec 114",
+     "concept": "Local Lolli sweets",
+     "tiedWith": [],
+     "expectedOrders": 151,
+     "range80": [
+      111,
+      208
+     ],
+     "par": 214
+    }
+   ],
+   "busiestWindow": "Changeover",
+   "claims": [
+    "The busiest minutes for food stands will be \"Changeover\", not doors-to-opener, measured as orders per minute.",
+    "Fixed food stands on the main concourse will each serve about 206 food orders.",
+    "Total food orders across fixed stands ≈ 5,778."
+   ],
+   "howToCheck": "Venue or Delaware North POS counts by stand and 15-minute bucket; failing that, queue lengths timed by an attendee at two stands per window."
+  },
+  {
+   "id": "gorillaz-2026-10-31-19-30",
+   "title": "Gorillaz",
+   "date": "2026-10-31",
+   "start": "19:30",
+   "source": "https://climatepledgearena.com/event/gorillaz-26/",
+   "attendance": 15824,
+   "tasteSignal": "none (no Qloo key yet); a second dated file follows once live calls run",
+   "flexPlan": [
+    {
+     "location": "Chef's Table (club, sec 01 & 14)",
+     "concept": "Piroshky Piroshky",
+     "tiedWith": [
+      "fisher-scones",
+      "beechers",
+      "bristol-bay",
+      "poke",
+      "dumpling-house",
+      "no-guey",
+      "mollyd",
+      "impossible",
+      "sea-and-sound"
+     ],
+     "expectedOrders": 116,
+     "range80": [
+      80,
+      151
+     ],
+     "par": 131
+    },
+    {
+     "location": "The Pepsi Marketplace feature (sec 124)",
+     "concept": "MollyD Burgers",
+     "tiedWith": [],
+     "expectedOrders": 312,
+     "range80": [
+      225,
+      414
+     ],
+     "par": 350
+    },
+    {
+     "location": "Portable, main concourse sec 04",
+     "concept": "Starbucks cart",
+     "tiedWith": [],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 146
+    },
+    {
+     "location": "Portable, main concourse sec 12",
+     "concept": "Bavarian Meats",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bristol-bay",
+      "poke"
+     ],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 115
+    },
+    {
+     "location": "Portable, main concourse sec 16/25",
+     "concept": "Bristol Bay (salmon dip)",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bavarian-meats",
+      "poke"
+     ],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 115
+    },
+    {
+     "location": "Portable, upper concourse sec 114",
+     "concept": "Local Lolli sweets",
+     "tiedWith": [],
+     "expectedOrders": 151,
+     "range80": [
+      111,
+      208
+     ],
+     "par": 214
+    }
+   ],
+   "busiestWindow": "Changeover",
+   "claims": [
+    "The busiest minutes for food stands will be \"Changeover\", not doors-to-opener, measured as orders per minute.",
+    "Fixed food stands on the main concourse will each serve about 206 food orders.",
+    "Total food orders across fixed stands ≈ 5,778."
+   ],
+   "howToCheck": "Venue or Delaware North POS counts by stand and 15-minute bucket; failing that, queue lengths timed by an attendee at two stands per window."
+  },
+  {
+   "id": "garth-brooks-2026-11-13-20-00",
+   "title": "Garth Brooks",
+   "date": "2026-11-13",
+   "start": "20:00",
+   "source": "https://climatepledgearena.com/event/garth-brooks-26-1/",
+   "attendance": 15824,
+   "tasteSignal": "none (no Qloo key yet); a second dated file follows once live calls run",
+   "flexPlan": [
+    {
+     "location": "Chef's Table (club, sec 01 & 14)",
+     "concept": "Piroshky Piroshky",
+     "tiedWith": [
+      "fisher-scones",
+      "beechers",
+      "bristol-bay",
+      "poke",
+      "dumpling-house",
+      "no-guey",
+      "mollyd",
+      "impossible",
+      "sea-and-sound"
+     ],
+     "expectedOrders": 116,
+     "range80": [
+      80,
+      151
+     ],
+     "par": 131
+    },
+    {
+     "location": "The Pepsi Marketplace feature (sec 124)",
+     "concept": "MollyD Burgers",
+     "tiedWith": [],
+     "expectedOrders": 312,
+     "range80": [
+      225,
+      414
+     ],
+     "par": 350
+    },
+    {
+     "location": "Portable, main concourse sec 04",
+     "concept": "Starbucks cart",
+     "tiedWith": [],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 146
+    },
+    {
+     "location": "Portable, main concourse sec 12",
+     "concept": "Bavarian Meats",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bristol-bay",
+      "poke"
+     ],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 115
+    },
+    {
+     "location": "Portable, main concourse sec 16/25",
+     "concept": "Bristol Bay (salmon dip)",
+     "tiedWith": [
+      "piroshky",
+      "fisher-scones",
+      "bavarian-meats",
+      "poke"
+     ],
+     "expectedOrders": 102,
+     "range80": [
+      71,
+      136
+     ],
+     "par": 115
+    },
+    {
+     "location": "Portable, upper concourse sec 114",
+     "concept": "Local Lolli sweets",
+     "tiedWith": [],
+     "expectedOrders": 151,
+     "range80": [
+      111,
+      208
+     ],
+     "par": 214
+    }
+   ],
+   "busiestWindow": "Changeover",
+   "claims": [
+    "The busiest minutes for food stands will be \"Changeover\", not doors-to-opener, measured as orders per minute.",
+    "Fixed food stands on the main concourse will each serve about 206 food orders.",
+    "Total food orders across fixed stands ≈ 5,778."
+   ],
+   "howToCheck": "Venue or Delaware North POS counts by stand and 15-minute bucket; failing that, queue lengths timed by an attendee at two stands per window."
+  }
+ ]
+}
