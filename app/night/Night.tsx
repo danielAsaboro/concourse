@@ -166,7 +166,7 @@ export default function Night() {
             <section className="nt-card">
               <div className="nt-card-head">
                 <h2>With and without Qloo</h2>
-                <p className="nt-muted">Every alternative is scored by the same model, so the gaps come from the choices, not the scoring.</p>
+                <p className="nt-muted">Every alternative is scored by the same model, so the gaps come from the choices, not the scoring. A location counts as different if its concept or its register count differs.</p>
               </div>
               <table className="nt-table">
                 <thead><tr><th>Plan</th><th className="r">Expected</th><th className="r">Locations different</th></tr></thead>

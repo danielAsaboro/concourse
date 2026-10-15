@@ -19,10 +19,16 @@ export type Baseline = {
 export type Sensitivity = { param: ParamKey; status: string; low: number; high: number; totalLow: number; totalHigh: number; planChangesLow: number; planChangesHigh: number };
 
 const cid = (x: string | undefined) => (x ?? "").split("#")[0];
-const diff = (a: Record<string, string>, b: Record<string, string>) => FLEX_SLOTS.filter((s) => cid(a[s.id]) !== cid(b[s.id])).length;
+/** Concept plus registers; an assignment without a register count means the location's default staffing. */
+const full = (slotId: string, x: string | undefined) => {
+  const [c, k] = (x ?? "").split("#");
+  return `${c}#${k || FLEX_SLOTS.find((s) => s.id === slotId)!.servers}`;
+};
+/** Locations whose concept or register count differs. */
+const diff = (a: Record<string, string>, b: Record<string, string>) => FLEX_SLOTS.filter((s) => full(s.id, a[s.id]) !== full(s.id, b[s.id])).length;
 /** Changed locations, ignoring swaps between concepts the model scores as tied. */
 const material = (p: FlexPlan, base: Record<string, string>) =>
-  p.decisions.filter((d) => d.concept.id !== base[d.slot.id] && !d.tiedWith.includes(base[d.slot.id])).length;
+  p.decisions.filter((d) => d.concept.id !== cid(base[d.slot.id]) && !d.tiedWith.includes(cid(base[d.slot.id]))).length;
 const asMap = (p: FlexPlan) => Object.fromEntries(p.decisions.map((d) => [d.slot.id, d.concept.id]));
 /** Concept and staffing, for scoring a plan exactly as solved. */
 const asOpt = (p: FlexPlan) => Object.fromEntries(p.decisions.map((d) => [d.slot.id, `${d.concept.id}#${d.servers}`]));
@@ -40,16 +46,16 @@ export async function analyse(e: VenueEvent, taste: TasteInput, v: Values = defa
   };
   const plan = await run("Tonight's plan", e, v, taste, pinned);
   const ablation = await run("Without Qloo (taste effect 0)", e, { ...v, tasteBeta: 0 }, null, pinned);
-  const planMap = asMap(plan);
+  const planMap = asOpt(plan);
   const ablMap = asMap(ablation);
 
   const baselines: Baseline[] = [];
-  const sq = Object.fromEntries(FLEX_SLOTS.map((s) => [s.id, s.statusQuo ?? ablMap[s.id]]));
-  baselines.push({ id: "status-quo", label: "Keep what runs there now", status: "scored", note: "Published occupant where there is one; otherwise the without-taste pick.", assignment: sq, total: evaluate(e, sq, v, taste).total, slotsDifferent: diff(sq, planMap) });
+  const sq = Object.fromEntries(FLEX_SLOTS.map((s) => [s.id, `${s.statusQuo ?? cid(ablMap[s.id])}#${s.servers}`]));
+  baselines.push({ id: "status-quo", label: "Keep what runs there now", status: "scored", note: "Published occupant where there is one, otherwise the without-taste pick, at default staffing (4 registers per stand, 2 per cart).", assignment: sq, total: evaluate(e, sq, v, taste).total, slotsDifferent: diff(sq, planMap) });
   const cb = (claudeBaseline as { generatedAt: string; events: Record<string, { assignment: Record<string, string> }> }).events[e.id];
   if (cb) {
     const ev = evaluate(e, cb.assignment, v, taste);
-    baselines.push({ id: "claude-no-qloo", label: "Claude without Qloo", status: ev.feasible ? "scored" : "not-available", note: `Recorded ${claudeBaseline.generatedAt}: same locations, concepts and rules, no Qloo data, no web access.`, assignment: cb.assignment, total: ev.total, slotsDifferent: diff(cb.assignment, planMap) });
+    baselines.push({ id: "claude-no-qloo", label: "Claude without Qloo", status: ev.feasible ? "scored" : "not-available", note: `Recorded ${claudeBaseline.generatedAt}: same locations, concepts and rules, no Qloo data, no web access. Scored at default staffing.`, assignment: cb.assignment, total: ev.total, slotsDifferent: diff(cb.assignment, planMap) });
   } else {
     baselines.push({ id: "claude-no-qloo", label: "Claude without Qloo", status: "not-available", note: "Recorded for five pre-registered events only." });
   }
