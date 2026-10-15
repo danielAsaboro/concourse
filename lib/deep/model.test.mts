@@ -93,3 +93,19 @@ test("solver equals exhaustive search on 40 random instances, and respects every
     for (const s of slots) if (s.mustFill) assert.ok(hs.assignment[s.id], "must-fill slot left empty");
   }
 });
+
+test("grouped options (one concept at several staffing levels) are placed at most once, matching exhaustive search", async () => {
+  for (let t = 1; t <= 15; t++) {
+    const r = rng(t * 104729);
+    const slots = Array.from({ length: 3 }, (_, i) => ({ id: `s${i}`, mustFill: true }));
+    const concepts = Array.from({ length: 3 }, (_, i) => [1, 2, 3].map((k) => ({ id: `c${i}#${k}`, category: "food", group: `c${i}` }))).flat();
+    const value = new Map<string, number>();
+    for (const s of slots) for (const c of concepts) value.set(key(s.id, c.id), Math.round(r() * 1000));
+    const inp = { slots, concepts, value };
+    const bf = bruteForce(inp);
+    const hs = await solve(inp);
+    assert.ok(Math.abs(hs.objective - bf.objective) < 1e-6, `instance ${t}`);
+    const groups = Object.values(hs.assignment).map((x) => x.split("#")[0]);
+    assert.equal(new Set(groups).size, groups.length);
+  }
+});

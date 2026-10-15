@@ -10,7 +10,7 @@ type Concept = { id: string; name: string; needs: string[]; hero: string; from: 
 type Param = { value: number; low: number; high: number; unit: string; status: string; source: string };
 type Meta = { venue: { name: string; city: string; concessionaire: string; capacitySource: string; capacity: Record<string, number> }; retrieved: string; events: Ev[]; cancelled: Ev[]; slots: Slot[]; concepts: Concept[]; params: Record<string, Param> };
 type Econ = { demandTx: number; demandInterval: [number, number]; servedTx: number; lostTx: number; worstWaitMin: number; par: { item: string; quantity: number; expectedLeftover: number }; revenue: number; contribution: number; parts: { margin: number; waste: number; changeover: number } };
-type Decision = { slot: Slot; concept: Concept; economics: Econ; z: number | null; runnerUp: { concept: Concept; contribution: number } | null; tiedWith: string[] };
+type Decision = { slot: Slot; concept: Concept; servers: number; economics: Econ; z: number | null; runnerUp: { concept: Concept; contribution: number } | null; tiedWith: string[] };
 type Plan = { decisions: Decision[]; total: number; solver: { status: string; gap: number }; usedTaste: boolean };
 type Analysis = {
   error?: string;
@@ -20,7 +20,11 @@ type Analysis = {
   sensitivity: { param: string; status: string; low: number; high: number; totalLow: number; totalHigh: number; planChangesLow: number; planChangesHigh: number }[];
   breakEvens: { slotId: string; incumbent: string; challenger: string | null; zNeeded: number | null }[];
   par: { standId: string; stand: string; level: string; item: string; demandTx: number; servedTx: number; worstWaitMin: number; quantity: number; expectedLeftover: number }[];
-  taste: { status: "pending" | "live"; reason?: string; detail?: string; calls: { endpoint: string; at: string; ok: boolean; note: string }[]; localScouting?: { name: string; affinity: number; tags: string[] }[]; unresolved?: string[] };
+  taste: { status: "pending" | "live"; reason?: string; detail?: string; calls: { endpoint: string; params: Record<string, string>; at: string; ms: number; ok: boolean; note: string }[]; localScouting?: { name: string; affinity: number; tags: string[] }[]; unresolved?: string[] };
+  crowdSeed: { name: string; type: string; role: string }[];
+  headline: { status: "live" | "pending"; withQloo: number | null; withoutQloo: number; claude: number | null };
+  pareto: { waitPenalty: number; contribution: number; peakWaitMin: number; fanWaitHours: number; assignment: Record<string, string>; chosen: boolean }[];
+  solves: { label: string; status: string; objective: number; gap: number; ms: number; variables: number; constraints: number }[];
   pinned: Record<string, string>;
 };
 
@@ -93,6 +97,24 @@ export default function Night() {
             <Stat label="Qloo taste signal" value={a.taste.status === "live" ? "Live" : "Pending"} note={a.taste.status === "live" ? `${a.taste.calls.length} calls tonight` : "no key on this deployment"} tone={a.taste.status === "live" ? "ok" : "warn"} />
           </section>
 
+          <section className="nt-headline">
+            {a.headline.status === "live" && a.headline.withQloo !== null ? (
+              <p>
+                With Qloo, tonight&apos;s flexible locations are expected to contribute <b>{usd(a.headline.withQloo)}</b>, against <b>{usd(a.headline.withoutQloo)}</b> without it
+                {" "}(<b className={a.headline.withQloo - a.headline.withoutQloo >= 0 ? "nt-pos" : "nt-neg"}>{a.headline.withQloo - a.headline.withoutQloo >= 0 ? "+" : "−"}{usd(Math.abs(a.headline.withQloo - a.headline.withoutQloo))}</b>)
+                {a.headline.claude !== null && <> and {usd(a.headline.claude)} for Claude&apos;s plan without Qloo</>}.
+              </p>
+            ) : (
+              <p>
+                The with-Qloo number appears after the first live Qloo call. Without Qloo the best plan is worth <b>{usd(a.headline.withoutQloo)}</b>
+                {a.headline.claude !== null && <>; Claude&apos;s plan without Qloo scores <b>{usd(a.headline.claude)}</b> under the same model</>}.
+              </p>
+            )}
+            <p className="nt-sub">
+              Crowd profile seeded from {a.crowdSeed.map((x) => `${x.name} (${x.role})`).join(" and ")}, not from the arena. A venue&apos;s own Qloo profile reflects its neighbourhood; tonight&apos;s crowd is whoever the act or the teams draw.
+            </p>
+          </section>
+
           {a.taste.status !== "live" && (
             <p className="nt-banner">
               No Qloo key is configured here, so tonight&apos;s plan runs without a taste signal. That makes it the same as the without-Qloo ablation below.
@@ -103,7 +125,7 @@ export default function Night() {
           <section className="nt-card">
             <div className="nt-card-head">
               <h2>Flexible locations</h2>
-              <p className="nt-muted">Each pick maximises expected contribution given tonight&apos;s crowd size, purchase timing, registers and waste. Pin a concept to override; the solver re-plans the rest.</p>
+              <p className="nt-muted">Each pick, and how many registers to open, maximises expected contribution given tonight&apos;s crowd size, purchase timing, labour and waste. Pin a concept to override; the solver re-plans the rest.</p>
             </div>
             <div className="nt-table-wrap">
               <table className="nt-table">
@@ -113,12 +135,12 @@ export default function Night() {
                     const allowed = meta.concepts.filter((c) => c.needs.every((x) => d.slot.capabilities.includes(x)));
                     return (
                       <tr key={d.slot.id}>
-                        <td><b>{d.slot.label}</b><span className="nt-sub">{LEVEL[d.slot.level]} · {d.slot.kind === "cart" ? "cart" : "rotating stand"} · {d.slot.servers} registers</span></td>
+                        <td><b>{d.slot.label}</b><span className="nt-sub">{LEVEL[d.slot.level]} · {d.slot.kind === "cart" ? "cart" : "rotating stand"}</span></td>
                         <td>
                           <select className="nt-pin" value={pins[d.slot.id] ?? d.concept.id} onChange={(e) => setPins({ ...pins, [d.slot.id]: e.target.value })}>
                             {allowed.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                           </select>
-                          <span className="nt-sub">{d.concept.hero}{pins[d.slot.id] ? " · pinned" : ""}</span>
+                          <span className="nt-sub">{d.concept.hero} · {d.servers} register{d.servers > 1 ? "s" : ""}{pins[d.slot.id] ? " · pinned" : ""}</span>
                         </td>
                         <td className="r">{int(d.economics.demandTx)}<span className="nt-sub">{int(d.economics.demandInterval[0])}–{int(d.economics.demandInterval[1])}</span></td>
                         <td className="r">{int(d.economics.servedTx)}<span className="nt-sub">{d.economics.lostTx >= 1 ? `${int(d.economics.lostTx)} lost` : "none lost"}</span></td>
@@ -212,6 +234,45 @@ export default function Night() {
           </section>
 
           <section className="nt-card">
+            <div className="nt-card-head">
+              <h2>Money against queues</h2>
+              <p className="nt-muted">The plan re-solved with a growing price on each minute a fan waits. Opening more registers shortens the worst line and costs labour. Each dot is a distinct plan; pick the trade-off you can live with. A worst wait at the 10-minute mark means a line long enough that fans walk away.</p>
+            </div>
+            <Pareto points={a.pareto} usd={usd} />
+          </section>
+
+          <section className="nt-card">
+            <details className="nt-evidence">
+              <summary><h2>Evidence: {a.taste.calls.length} Qloo call{a.taste.calls.length === 1 ? "" : "s"} · {a.solves.length} HiGHS solves</h2><span className="nt-sub">Every request behind tonight&apos;s numbers. Raw Qloo responses are kept privately on the server.</span></summary>
+              {a.taste.calls.length === 0 ? (
+                <p className="nt-muted">No Qloo calls tonight: {a.taste.detail ?? "no key configured."}</p>
+              ) : (
+                <div className="nt-table-wrap">
+                  <table className="nt-table">
+                    <thead><tr><th>When</th><th>Endpoint</th><th>What</th><th className="r">ms</th><th>Result</th></tr></thead>
+                    <tbody>{a.taste.calls.map((c, i) => <tr key={i}><td>{c.at.slice(11, 19)}</td><td><code>{c.endpoint}</code></td><td className="nt-why">{c.note}</td><td className="r">{c.ms}</td><td>{c.ok ? "ok" : "failed"}</td></tr>)}</tbody>
+                  </table>
+                </div>
+              )}
+              <div className="nt-table-wrap">
+                <table className="nt-table">
+                  <thead><tr><th>Solve</th><th>Status</th><th className="r">Objective</th><th className="r">Gap</th><th className="r">Model</th><th className="r">ms</th></tr></thead>
+                  <tbody>
+                    {a.solves.filter((x) => !x.label.startsWith("Sensitivity")).map((x, i) => <tr key={i}><td>{x.label}</td><td>{x.status}</td><td className="r">{usd(x.objective)}</td><td className="r">{(x.gap * 100).toFixed(2)}%</td><td className="r">{x.variables} vars · {x.constraints} rows</td><td className="r">{x.ms.toFixed(1)}</td></tr>)}
+                    {(() => {
+                      const sw = a.solves.filter((x) => x.label.startsWith("Sensitivity"));
+                      if (!sw.length) return null;
+                      const allOpt = sw.every((x) => x.status === "Optimal");
+                      return <tr><td>Sensitivity sweep ({sw.length} solves)</td><td>{allOpt ? "all Optimal" : "some not optimal"}</td><td className="r">{usd(Math.min(...sw.map((x) => x.objective)))}–{usd(Math.max(...sw.map((x) => x.objective)))}</td><td className="r">max {(Math.max(...sw.map((x) => x.gap)) * 100).toFixed(2)}%</td><td className="r">{sw[0].variables} vars · {sw[0].constraints} rows</td><td className="r">{sw.reduce((t, x) => t + x.ms, 0).toFixed(0)} total</td></tr>;
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+              <p className="nt-foot">Check the maths yourself: the planner is also an MCP server at <code>/api/mcp</code> with <code>plan_event</code>, <code>erlang_c</code>, <code>newsvendor</code> and <code>textbook_checks</code>.</p>
+            </details>
+          </section>
+
+          <section className="nt-card">
             <div className="nt-card-head nt-row">
               <div>
                 <h2>Par sheet, fixed food stands</h2>
@@ -280,6 +341,41 @@ function fmtParam(x: number, p?: Param) {
   return `${+x.toFixed(2)}`;
 }
 
+function Pareto({ points, usd }: { points: Analysis["pareto"]; usd: (n: number) => string }) {
+  const W = 640, H = 240, L = 64, R = 16, T = 16, B = 40;
+  const xs = points.map((p) => p.peakWaitMin), ys = points.map((p) => p.contribution);
+  const x0 = 0, x1 = Math.max(1, ...xs) * 1.1;
+  const y0 = Math.min(...ys) - 200, y1 = Math.max(...ys) + 200;
+  const X = (v: number) => L + ((v - x0) / (x1 - x0)) * (W - L - R);
+  const Y = (v: number) => T + (1 - (v - y0) / (y1 - y0)) * (H - T - B);
+  const sorted = [...points].sort((a, b) => a.peakWaitMin - b.peakWaitMin);
+  const ticksX = Array.from({ length: 5 }, (_, i) => x0 + ((x1 - x0) * i) / 4);
+  const ticksY = Array.from({ length: 4 }, (_, i) => y0 + ((y1 - y0) * i) / 3);
+  if (points.length < 2) return <p className="nt-muted">Only one plan survives every price on waiting tonight, so there is no trade-off to choose.</p>;
+  return (
+    <div className="nt-pareto">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Expected contribution against worst wait for each distinct plan">
+        {ticksY.map((t) => <g key={t}><line x1={L} x2={W - R} y1={Y(t)} y2={Y(t)} className="nt-grid" /><text x={L - 8} y={Y(t) + 4} textAnchor="end" className="nt-axis">{usd(t)}</text></g>)}
+        {ticksX.map((t) => <text key={t} x={X(t)} y={H - B + 18} textAnchor="middle" className="nt-axis">{t.toFixed(1)}</text>)}
+        <text x={(L + W - R) / 2} y={H - 6} textAnchor="middle" className="nt-axis">worst wait at any flexible location (min)</text>
+        <polyline points={sorted.map((p) => `${X(p.peakWaitMin)},${Y(p.contribution)}`).join(" ")} className="nt-frontier" />
+        {points.map((p) => (
+          <g key={p.waitPenalty}>
+            <circle cx={X(p.peakWaitMin)} cy={Y(p.contribution)} r={p.chosen ? 7 : 5} className={p.chosen ? "nt-dot nt-dot-on" : "nt-dot"}>
+              <title>{`$${p.waitPenalty} per fan-minute: ${usd(p.contribution)}, worst wait ${p.peakWaitMin.toFixed(1)} min, ${p.fanWaitHours.toFixed(1)} fan-hours waiting`}</title>
+            </circle>
+            <text x={X(p.peakWaitMin) + 10} y={Y(p.contribution) - 8} className="nt-axis">{p.chosen ? "plan above" : `$${p.waitPenalty}/min`}</text>
+          </g>
+        ))}
+      </svg>
+      <table className="nt-table">
+        <thead><tr><th>Price on waiting</th><th className="r">Expected</th><th className="r">Worst wait</th><th className="r">Fan-hours waiting</th></tr></thead>
+        <tbody>{sorted.map((p) => <tr key={p.waitPenalty}><td>{p.chosen ? "None (plan above)" : `$${p.waitPenalty} per fan-minute`}</td><td className="r">{usd(p.contribution)}</td><td className="r">{p.peakWaitMin >= 9.99 ? "walk-aways" : `${p.peakWaitMin.toFixed(1)} min`}</td><td className="r">{p.fanWaitHours.toFixed(1)}</td></tr>)}</tbody>
+      </table>
+    </div>
+  );
+}
+
 function Stat({ label, value, note, tone }: { label: string; value: string; note: string; tone?: "ok" | "warn" }) {
   return <div className={`nt-stat ${tone ? `nt-${tone}` : ""}`}><span>{label}</span><b>{value}</b><small>{note}</small></div>;
 }
@@ -325,6 +421,19 @@ function Style() {
 .nt-list{margin:0;padding-left:18px;font-size:14px;line-height:1.7}
 .nt-loading{position:fixed;bottom:16px;right:16px;background:var(--fg);color:var(--bg);padding:8px 12px;border-radius:var(--r-ctl);font-size:13px}
 .nt-err{color:var(--bad)}
+.nt-headline{margin:0 0 16px;padding:18px 20px;border-radius:var(--r-card);background:var(--accent-soft);border:1px solid var(--line)}
+.nt-headline p{margin:0;font-size:17px;line-height:1.5} .nt-headline .nt-sub{font-size:13px;margin-top:8px}
+.nt-pos{color:var(--ok)} .nt-neg{color:var(--bad)}
+.nt-pareto{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px;align-items:start}
+.nt-pareto svg{width:100%;height:auto}
+.nt-grid{stroke:var(--line);stroke-width:1} .nt-axis{fill:var(--fg-3);font-size:11px;font-family:var(--sans)}
+.nt-frontier{fill:none;stroke:var(--accent);stroke-width:2;opacity:.5}
+.nt-dot{fill:var(--accent);stroke:var(--surface);stroke-width:2} .nt-dot-on{fill:var(--fg)}
+.nt-evidence summary{cursor:pointer;list-style:none} .nt-evidence summary h2{display:inline}
+.nt-evidence summary::-webkit-details-marker{display:none}
+.nt-evidence[open] summary{margin-bottom:12px}
+.nt-evidence code,.nt-foot code{font-family:var(--mono);font-size:12px}
+@media (max-width:760px){.nt-pareto{grid-template-columns:1fr}}
 @media (max-width:640px){.nt-sens-row{grid-template-columns:1fr;gap:6px}.nt-sens-val{text-align:left}.nt-row{flex-direction:column}}
 @media print{.nt-select,.nt-btn,.nt-pin,.nt-banner{display:none}.nt-card{break-inside:avoid;border:none}}
 `}</style>

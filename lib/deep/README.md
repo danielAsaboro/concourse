@@ -16,9 +16,12 @@ Fixed restaurants and pouring-rights partners (Coors Light, Hop Valley, Modelo, 
 | Demand | `planner.ts` | attendance (capacity × fill) × level share × F&B per head × food share, split across the outlets on that level; a Qloo affinity moves demand by `exp(β·z)`, z standardised within tonight's single Qloo call |
 | Timing and queues | `queue.ts` | demand split into doors, intermission(s) and play windows; Erlang C per location gives wait and lost sales, with exponential patience for walk-aways |
 | Par levels | `newsvendor.ts` | newsvendor quantity at critical ratio (price − cost)/(price − salvage) |
-| Plan | `solver.ts` | integer program solved exactly with HiGHS: one concept per location, each concept once, equipment fit, pins; objective is margin × incremental share − waste − changeover |
+| Plan | `solver.ts` | integer program solved exactly with HiGHS: one concept and a register count per location, each concept once, equipment fit, pins; objective is margin × incremental share − waste − changeover − labour |
 | Does Qloo matter | `analysis.ts` | without-Qloo ablation, baselines (keep what runs now, last similar event, a recorded Claude-without-Qloo answer, most popular via Qloo), one-at-a-time sensitivity on every assumption, break-even affinity gap per location |
-| Taste | `taste.ts` | live only: resolves the headliner or team, ranks every concept's cuisine tag in one `/v2/insights` call, scouts local places near the arena; raw responses kept privately in `.cache/qloo-raw/` |
+| Money vs queues | `analysis.ts` | re-solves with a price on each fan-minute of waiting ($0–$5) and keeps the distinct plans: a Pareto set of contribution against worst wait |
+| Evidence | `analysis.ts`, `/night` | every Qloo call and every HiGHS solve (status, objective, gap, model size, ms) in a drawer on the page |
+| Check it yourself | `checks.ts`, `/api/mcp` | MCP server (Streamable HTTP, POST JSON-RPC): `list_events`, `plan_event`, `erlang_c`, `newsvendor`, `textbook_checks` |
+| Taste | `taste.ts` | live only: seeds the crowd from the act (or home and visiting teams), never from the arena, whose own Qloo profile reflects its neighbourhood rather than the touring audience; ranks every concept's cuisine tag in one `/v2/insights` call, scouts local places near the arena; raw responses kept privately in `.cache/qloo-raw/` |
 
 Every input is in `economics.ts` with its value, range, status (sourced / derived / assumption) and source. There are no per-head F&B figures for NHL games or arena concerts in public sources, so those are assumptions anchored on Live Nation's 10-K and vendor-reported MLB per caps, and they are swept in the sensitivity view.
 

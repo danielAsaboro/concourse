@@ -2,11 +2,12 @@
 // with HiGHS, par sheet, baselines, without-Qloo ablation and sensitivity.
 // GET /api/night            -> venue, events, assumptions
 // GET /api/night?event=<id> -> full analysis (optional &pin=slot:concept,slot:concept)
+// GET /api/night?event=<id>&view=stands -> one row per arena stand id, for colouring the 3D venue
 import { NextRequest, NextResponse } from "next/server";
 import { EVENTS, CANCELLED, VENUE, RETRIEVED, FLEX_SLOTS, CONCEPTS, eventById } from "@/lib/deep/venue";
 import { PARAMS } from "@/lib/deep/economics";
 import { analyse } from "@/lib/deep/analysis";
-import { tasteFor } from "@/lib/deep/taste";
+import { tasteFor, anchorsFor } from "@/lib/deep/taste";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -26,8 +27,11 @@ export async function GET(req: NextRequest) {
   try {
     const taste = await tasteFor(e);
     const a = await analyse(e, taste.status === "live" ? taste.affinity : null, undefined, pinned);
+    if (req.nextUrl.searchParams.get("view") === "stands") {
+      return NextResponse.json({ event: { id: e.id, title: e.title }, taste: taste.status, stands: a.stands });
+    }
     // Calls are listed without the key (it is a header, never a parameter). Raw bodies stay in .cache.
-    return NextResponse.json({ ...a, taste: taste.status === "live" ? { ...taste } : taste, pinned });
+    return NextResponse.json({ ...a, taste: taste.status === "live" ? { ...taste } : taste, crowdSeed: anchorsFor(e), pinned });
   } catch (err) {
     return NextResponse.json({ error: (err as Error).message }, { status: 500 });
   }

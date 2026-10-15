@@ -3,7 +3,8 @@
 // each flexible location tonight. Fixed restaurants are not decision variables.
 
 export type SolveSlot = { id: string; mustFill: boolean };
-export type SolveConcept = { id: string; category: string };
+/** `group`: options sharing a group are the same concept (e.g. at different staffing), so at most one is placed. Defaults to id. */
+export type SolveConcept = { id: string; category: string; group?: string };
 
 export type SolveInput = {
   slots: SolveSlot[];
@@ -26,6 +27,10 @@ export type SolveResult = {
   /** Relative MIP gap reported by the solver; 0 means proven optimal. */
   gap: number;
   solver: "highs";
+  /** Wall time of the HiGHS call, ms, and model size, for the evidence drawer. */
+  ms: number;
+  variables: number;
+  constraints: number;
 };
 
 export const key = (s: string, c: string) => `${s}|${c}`;
@@ -48,9 +53,11 @@ export function toLp(inp: SolveInput): string {
     if (!vs.length) return;
     rows.push(` slot_${si}: ${sum(vs)} ${s.mustFill ? "=" : "<="} 1`);
   });
-  concepts.forEach((_, ci) => {
-    const vs = vars.filter((x) => x.c === ci);
-    if (vs.length) rows.push(` concept_${ci}: ${sum(vs)} <= 1`);
+  const groups = new Map<string, number[]>();
+  concepts.forEach((c, ci) => groups.set(c.group ?? c.id, [...(groups.get(c.group ?? c.id) ?? []), ci]));
+  [...groups.values()].forEach((cis, gi) => {
+    const vs = vars.filter((x) => cis.includes(x.c));
+    if (vs.length) rows.push(` concept_${gi}: ${sum(vs)} <= 1`);
   });
   const cats = new Set(concepts.map((c) => c.category));
   for (const cat of cats) {
@@ -62,15 +69,13 @@ export function toLp(inp: SolveInput): string {
     if (hi !== undefined) rows.push(` catmax_${cat}: ${sum(vs)} <= ${hi}`);
   }
   (inp.required ?? []).forEach((r, i) => {
-    const ci = concepts.findIndex((c) => c.id === r.conceptId);
-    const vs = vars.filter((x) => x.c === ci && (!r.slotIds || r.slotIds.includes(slots[x.s].id)));
+    const vs = vars.filter((x) => (concepts[x.c].group ?? concepts[x.c].id) === r.conceptId && (!r.slotIds || r.slotIds.includes(slots[x.s].id)));
     rows.push(` req_${i}: ${sum(vs)} >= 1`);
   });
   Object.entries(inp.pinned ?? {}).forEach(([sid, cid], i) => {
     const si = slots.findIndex((s) => s.id === sid);
-    const ci = concepts.findIndex((c) => c.id === cid);
-    const x = vars.find((y) => y.s === si && y.c === ci);
-    rows.push(` pin_${i}: ${x ? `+ ${x.name}` : "0 dummy"} = 1`);
+    const xs = vars.filter((y) => y.s === si && (concepts[y.c].group ?? concepts[y.c].id) === cid);
+    rows.push(` pin_${i}: ${xs.length ? sum(xs) : "0 dummy"} = 1`);
   });
   const obj = vars.length ? vars.map((x) => `${fmt(x.val)} ${x.name}`).join(" ") : "0 dummy";
   return [
@@ -105,7 +110,11 @@ async function highs(): Promise<HighsLike> {
 export async function solve(inp: SolveInput): Promise<SolveResult> {
   const h = await highs();
   const lp = toLp(inp);
+  const t0 = performance.now();
   const r = h.solve(lp, { mip_rel_gap: 0, output_flag: false } as Record<string, unknown>);
+  const ms = performance.now() - t0;
+  const variables = (lp.split("Binary")[1]?.match(/x_\d+_\d+/g) ?? []).length;
+  const constraints = (lp.split("Subject To")[1]?.split("Bounds")[0].match(/^ \w+:/gm) ?? []).length - 1;
   const assignment: Record<string, string> = {};
   if (r.Status === "Optimal") {
     for (const [name, col] of Object.entries(r.Columns)) {
@@ -114,7 +123,7 @@ export async function solve(inp: SolveInput): Promise<SolveResult> {
     }
   }
   const gap = r.Info?.mip_gap ?? 0;
-  return { status: r.Status, objective: r.Status === "Optimal" ? r.ObjectiveValue : NaN, assignment, gap: Number.isFinite(gap) ? Math.max(0, gap) : 0, solver: "highs" };
+  return { status: r.Status, objective: r.Status === "Optimal" ? r.ObjectiveValue : NaN, assignment, gap: Number.isFinite(gap) ? Math.max(0, gap) : 0, solver: "highs", ms, variables, constraints };
 }
 
 /**
@@ -133,8 +142,9 @@ export function bruteForce(inp: SolveInput): { objective: number; assignment: Re
     }
     for (const [cat, lo] of Object.entries(inp.categoryMin ?? {})) if ((counts[cat] ?? 0) < lo) return false;
     for (const [cat, hi] of Object.entries(inp.categoryMax ?? {})) if ((counts[cat] ?? 0) > hi) return false;
-    for (const r of inp.required ?? []) if (!Object.entries(cur).some(([s, c]) => c === r.conceptId && (!r.slotIds || r.slotIds.includes(s)))) return false;
-    for (const [s, c] of Object.entries(inp.pinned ?? {})) if (cur[s] !== c) return false;
+    const grp = (cid: string) => { const c = inp.concepts.find((x) => x.id === cid)!; return c.group ?? c.id; };
+    for (const r of inp.required ?? []) if (!Object.entries(cur).some(([s, c]) => grp(c) === r.conceptId && (!r.slotIds || r.slotIds.includes(s)))) return false;
+    for (const [s, c] of Object.entries(inp.pinned ?? {})) if (!cur[s] || grp(cur[s]) !== c) return false;
     return true;
   };
   const rec = (i: number, total: number) => {
@@ -146,10 +156,11 @@ export function bruteForce(inp: SolveInput): { objective: number; assignment: Re
     if (!s.mustFill) rec(i + 1, total);
     for (const c of inp.concepts) {
       const val = inp.value.get(key(s.id, c.id));
-      if (val === undefined || used.has(c.id)) continue;
-      used.add(c.id); cur[s.id] = c.id;
+      const g = c.group ?? c.id;
+      if (val === undefined || used.has(g)) continue;
+      used.add(g); cur[s.id] = c.id;
       rec(i + 1, total + val);
-      used.delete(c.id); delete cur[s.id];
+      used.delete(g); delete cur[s.id];
     }
   };
   rec(0, 0);

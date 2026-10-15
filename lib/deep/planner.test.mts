@@ -30,7 +30,7 @@ test("the solver's plan scores at least as well as any baseline under the same m
   const sq = Object.fromEntries(FLEX_SLOTS.map((s, i) => [s.id, CONCEPTS.filter((c) => canRun(s, c))[i % 2]?.id ?? ""]));
   const ev = evaluate(e, sq, defaults(), fake);
   if (ev.feasible) assert.ok(p.total >= ev.total - 1e-6);
-  assert.ok(Math.abs(evaluate(e, Object.fromEntries(p.decisions.map((d) => [d.slot.id, d.concept.id])), defaults(), fake).total - p.total) < 1e-6);
+  assert.ok(Math.abs(evaluate(e, Object.fromEntries(p.decisions.map((d) => [d.slot.id, `${d.concept.id}#${d.servers}`])), defaults(), fake).total - p.total) < 1e-6);
 });
 
 test("raising one concept's affinity never pushes it out of the plan", async () => {

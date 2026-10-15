@@ -77,11 +77,13 @@ export type SlotEconomics = {
   servedTx: number;
   lostTx: number;
   worstWaitMin: number;
+  /** Total minutes fans spend waiting here tonight (served fans × mean wait, plus walk-aways at their patience). */
+  fanWaitMin: number;
   windows: { name: string; demand: number; served: number; waitMin: number; utilisation: number }[];
   par: { item: string; quantity: number; expectedLeftover: number; criticalRatio: number };
   revenue: number;
   contribution: number;
-  parts: { margin: number; waste: number; changeover: number };
+  parts: { margin: number; waste: number; changeover: number; labor: number };
 };
 
 /** Expected economics of running concept c in a location with given level, pull and registers tonight. */
@@ -91,7 +93,7 @@ export function locationEconomics(
   c: { perishable: boolean; hero: string },
   z: number | undefined,
   v: Values,
-  opts: { incremental: boolean; changeover: boolean },
+  opts: { incremental: boolean; changeover: boolean; labor?: boolean },
 ): SlotEconomics {
   const w = levelWeights(v);
   const lvlWeight = loc.level === "both" ? (w.main + w.upper) / 2 : w[loc.level as "main" | "upper" | "club"];
@@ -111,27 +113,39 @@ export function locationEconomics(
   const margin = (opts.incremental ? v.incremental : 1) * revenue * (1 - v.foodCostPct);
   const waste = nv.expectedLeftover * (unitCost - salvage);
   const changeover = opts.changeover ? v.changeoverCost : 0;
+  const labor = opts.labor ? v.laborPerRegister * loc.servers : 0;
   return {
     demandTx,
     demandInterval: interval(demandTx, nbVariance(demandTx, v.demandDispersion)),
     servedTx,
     lostTx: demandTx - servedTx,
     worstWaitMin: Math.max(...windows.map((x) => x.waitMin)),
+    fanWaitMin: windows.reduce((t, x) => t + (Number.isFinite(x.waitMin) ? x.served * x.waitMin : x.served * v.patienceMin) + (x.demand - x.served) * v.patienceMin, 0),
     windows,
     par: { item: c.hero, quantity: nv.quantity, expectedLeftover: nv.expectedLeftover, criticalRatio: nv.criticalRatio },
     revenue,
-    contribution: margin - waste - changeover,
-    parts: { margin, waste, changeover },
+    contribution: margin - waste - changeover - labor,
+    parts: { margin, waste, changeover, labor },
   };
 }
 
-export function slotValue(e: VenueEvent, s: FlexSlot, c: Concept, z: number | undefined, v: Values): SlotEconomics {
-  return locationEconomics(e, { level: s.level, weight: s.kind === "cart" ? v.cartWeight : 1, servers: s.servers }, c, z, v, { incremental: true, changeover: s.statusQuo !== c.id });
+/** Registers the plan may open at a location: carts 1–3, rotating stands 2–6. */
+export function staffingOptions(s: FlexSlot): number[] {
+  return s.kind === "cart" ? [1, 2, 3] : [2, 3, 4, 5, 6];
 }
+
+export function slotValue(e: VenueEvent, s: FlexSlot, c: Concept, z: number | undefined, v: Values, servers = s.servers): SlotEconomics {
+  return locationEconomics(e, { level: s.level, weight: s.kind === "cart" ? v.cartWeight : 1, servers }, c, z, v, { incremental: true, changeover: s.statusQuo !== c.id, labor: true });
+}
+
+const optId = (c: string, k: number) => `${c}#${k}`;
+const parseOpt = (o: string) => { const [c, k] = o.split("#"); return { conceptId: c, servers: k ? +k : NaN }; };
 
 export type FlexDecision = {
   slot: FlexSlot;
   concept: Concept;
+  /** Registers the solver chose to open. */
+  servers: number;
   economics: SlotEconomics;
   z: number | null;
   runnerUp: { concept: Concept; contribution: number } | null;
@@ -141,29 +155,36 @@ export type FlexDecision = {
 
 export type FlexPlan = { decisions: FlexDecision[]; total: number; solver: SolveResult; usedTaste: boolean };
 
-export async function planFlex(e: VenueEvent, v: Values = defaults(), taste: TasteInput = null, pinned: Record<string, string> = {}): Promise<FlexPlan> {
+/**
+ * `waitPenalty` ($ per fan-minute of waiting) trades contribution against queues;
+ * 0 is the pure contribution plan. Used for the Pareto view.
+ */
+export async function planFlex(e: VenueEvent, v: Values = defaults(), taste: TasteInput = null, pinned: Record<string, string> = {}, waitPenalty = 0): Promise<FlexPlan> {
   const z = standardise(taste);
   const value = new Map<string, number>();
   const econ = new Map<string, SlotEconomics>();
+  const options: { id: string; category: string; group: string }[] = [];
+  for (const c of CONCEPTS) for (const k of [1, 2, 3, 4, 5, 6]) options.push({ id: optId(c.id, k), category: c.category, group: c.id });
   for (const s of FLEX_SLOTS) for (const c of CONCEPTS) {
     if (!canRun(s, c)) continue;
-    const x = slotValue(e, s, c, z[c.id], v);
-    econ.set(key(s.id, c.id), x);
-    // Rounded to cents so exact ties break the same way every run (by list order).
-    value.set(key(s.id, c.id), Math.round(x.contribution * 100) / 100);
+    for (const k of staffingOptions(s)) {
+      const x = slotValue(e, s, c, z[c.id], v, k);
+      econ.set(key(s.id, optId(c.id, k)), x);
+      // Rounded to cents so exact ties break the same way every run (by list order).
+      value.set(key(s.id, optId(c.id, k)), Math.round((x.contribution - waitPenalty * x.fanWaitMin) * 100) / 100);
+    }
   }
-  const res = await solve({
-    slots: FLEX_SLOTS.map((s) => ({ id: s.id, mustFill: true })),
-    concepts: CONCEPTS.map((c) => ({ id: c.id, category: c.category })),
-    value,
-    pinned,
-  });
+  const res = await solve({ slots: FLEX_SLOTS.map((s) => ({ id: s.id, mustFill: true })), concepts: options, value, pinned });
+  // Best staffing per concept at a location, for comparing concepts like for like.
+  const bestFor = (s: FlexSlot, c: Concept) => staffingOptions(s).map((k) => econ.get(key(s.id, optId(c.id, k)))).filter((x): x is SlotEconomics => !!x).sort((a, b) => b.contribution - a.contribution)[0];
   const decisions: FlexDecision[] = FLEX_SLOTS.filter((s) => res.assignment[s.id]).map((s) => {
-    const concept = CONCEPTS.find((c) => c.id === res.assignment[s.id])!;
-    const others = CONCEPTS.filter((c) => c.id !== concept.id && value.has(key(s.id, c.id))).map((c) => ({ concept: c, contribution: value.get(key(s.id, c.id))! })).sort((a, b) => b.contribution - a.contribution);
-    const mine = value.get(key(s.id, concept.id))!;
+    const { conceptId, servers } = parseOpt(res.assignment[s.id]);
+    const concept = CONCEPTS.find((c) => c.id === conceptId)!;
+    const economics = econ.get(key(s.id, res.assignment[s.id]))!;
+    const others = CONCEPTS.filter((c) => c.id !== concept.id && canRun(s, c)).map((c) => ({ concept: c, contribution: bestFor(s, c).contribution })).sort((a, b) => b.contribution - a.contribution);
+    const mine = bestFor(s, concept).contribution;
     const tiedWith = others.filter((o) => Math.abs(o.contribution - mine) < 1).map((o) => o.concept.id);
-    return { slot: s, concept, economics: econ.get(key(s.id, concept.id))!, z: z[concept.id] ?? null, runnerUp: others[0] ?? null, tiedWith };
+    return { slot: s, concept, servers, economics, z: z[concept.id] ?? null, runnerUp: others[0] ?? null, tiedWith };
   });
   return { decisions, total: decisions.reduce((t, d) => t + d.economics.contribution, 0), solver: res, usedTaste: Object.keys(z).length > 0 };
 }
@@ -175,10 +196,11 @@ export function evaluate(e: VenueEvent, assignment: Record<string, string>, v: V
   let feasible = true;
   const used = new Set<string>();
   for (const s of FLEX_SLOTS) {
-    const c = CONCEPTS.find((x) => x.id === assignment[s.id]);
+    const { conceptId, servers } = parseOpt(assignment[s.id] ?? "");
+    const c = CONCEPTS.find((x) => x.id === conceptId);
     if (!c || !canRun(s, c) || used.has(c.id)) { feasible = false; perSlot[s.id] = NaN; continue; }
     used.add(c.id);
-    perSlot[s.id] = slotValue(e, s, c, z[c.id], v).contribution;
+    perSlot[s.id] = slotValue(e, s, c, z[c.id], v, Number.isFinite(servers) ? servers : s.servers).contribution;
   }
   return { total: Object.values(perSlot).reduce((a, b) => a + (Number.isFinite(b) ? b : 0), 0), feasible, perSlot };
 }

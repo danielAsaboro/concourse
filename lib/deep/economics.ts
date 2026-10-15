@@ -37,6 +37,7 @@ export const PARAMS = {
   levelShareClub: P(0.08, 0.05, 0.12, "share of fans", "assumption", "Club and suite ticket holders"),
   cartWeight: P(0.5, 0.3, 0.8, "pull of a cart vs a stand", "assumption", "Carts draw fewer fans than a full stand"),
   incremental: P(0.5, 0.3, 0.8, "share of a flex location's sales that is new spend", "assumption", "The rest moves from nearby stands"),
+  laborPerRegister: P(150, 90, 220, "USD per register per event", "assumption", "One cashier for a ~5 h event shift at a loaded hourly cost; no venue figure published"),
   changeoverCost: P(250, 100, 500, "USD per concept change", "assumption", "Setup, delivery and training to swap what a location runs"),
   // How much a Qloo affinity moves demand: multiplier exp(beta × z), z = standardised affinity
   // among tonight's candidates. beta 0 is the without-Qloo ablation.

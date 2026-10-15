@@ -16,7 +16,7 @@ export type Taste =
   | { status: "pending"; reason: "NO_KEY" | "ERROR"; detail: string; calls: TasteCall[] }
   | {
       status: "live";
-      anchors: { name: string; id: string }[];
+      anchors: { name: string; id: string; role: string }[];
       /** concept id -> affinity from ONE call, so values are comparable within tonight only. */
       affinity: Record<string, number>;
       /** concept id -> the tag id the score came from. */
@@ -28,13 +28,22 @@ export type Taste =
     };
 
 /**
- * Who the crowd came for. Concerts: the headliner as an artist. Kraken games:
- * the team. The entity types are checked on the first live call (docs/qloo.md §8).
+ * Who the crowd came for. The profile is seeded from the act or the teams, never
+ * from the arena: a venue's own Qloo profile reflects its neighbourhood, not the
+ * touring audience that fills it tonight. Kraken games add the visiting team,
+ * whose travelling fans are part of the crowd. Entity types are checked on the
+ * first live call (docs/qloo.md).
  */
-export function anchorsFor(e: VenueEvent): { name: string; type: string }[] {
-  if (e.kind === "game") return [{ name: "Seattle Kraken", type: "urn:entity:brand" }];
-  const name = e.headliner.replace(/:.*$/, "").replace(/\s*&.*$/, "").trim();
-  return [{ name, type: "urn:entity:artist" }];
+export function anchorsFor(e: VenueEvent): { name: string; type: string; role: string }[] {
+  if (e.kind === "game") {
+    const away = e.title.match(/vs\.?\s+(.+)$/i)?.[1]?.trim();
+    return [
+      { name: "Seattle Kraken", type: "urn:entity:brand", role: "home team" },
+      ...(away ? [{ name: away, type: "urn:entity:brand", role: "visiting team" }] : []),
+    ];
+  }
+  const acts = e.headliner.replace(/:.*$/, "").split(/\s*&\s*/).map((x) => x.replace(/^Ms\.\s+/, "").trim()).filter(Boolean);
+  return acts.map((name, i) => ({ name, type: "urn:entity:artist", role: i === 0 ? "headliner" : "co-headliner" }));
 }
 
 const RAW_DIR = path.join(process.cwd(), ".cache", "qloo-raw");
@@ -67,10 +76,12 @@ export async function tasteFor(e: VenueEvent, concepts: Concept[] = CONCEPTS): P
     }
   };
   try {
-    const anchors: { name: string; id: string }[] = [];
+    const anchors: { name: string; id: string; role: string }[] = [];
     for (const a of anchorsFor(e)) {
+      const t0 = Date.now();
       const id = await resolveEntityId(a.name, a.type);
-      if (id) anchors.push({ name: a.name, id });
+      calls.push({ endpoint: "/search", params: { query: a.name, types: a.type }, at: new Date().toISOString(), ms: Date.now() - t0, ok: !!id, note: id ? `resolved ${a.role} ${a.name}` : `${a.role} ${a.name} not found` });
+      if (id) anchors.push({ name: a.name, id, role: a.role });
     }
     if (!anchors.length) return { status: "pending", reason: "ERROR", detail: `NO_SIGNAL: ${e.headliner} did not resolve to a Qloo entity`, calls };
     const signal = anchors.map((a) => a.id).join(",");
