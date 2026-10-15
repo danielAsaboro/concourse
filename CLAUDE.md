@@ -5,7 +5,7 @@ Sponsor mechanism (critical path): Qloo `/v2/insights` with `filter.results.enti
 Features in scope: event switcher + 3D arena lit by fit · stand inspector with Qloo evidence + swap · tonight-vs-last-night diff · evidence ledger · agent chat. Not building: ticketing, POS integration, accounts, real venue maps.
 
 Stack: Next.js 16 app router, react-three-fiber, @anthropic-ai/sdk. Node ≥ 20.9.
-Run: `npm install && npm run dev` · Test: `npm run build && npm start` then `npm test` (typecheck + scripts/smoke.mjs; `BASE_URL=` for a deploy) · Deploy: Vercel, env in docs/qloo.md §7.
+Run: `npm install && npm run dev` · Test: `npm run build && npm start` then `npm test` (typecheck + scripts/smoke.mjs + lib/deep model tests; `BASE_URL=` for a deploy) · Deploy: Vercel, env in docs/qloo.md §7.
 CI does NOT cover: anything live (Qloo or Claude), the 3D render, mobile layout.
 
 Repo map:
@@ -14,6 +14,9 @@ Repo map:
 - lib/qloo/ types → live client → synthetic fixtures (mock.ts) → unified access + ledger (index.ts)
 - lib/agent/ plan.ts (ranking → assignment → diff), chat.ts (Claude tools + offline planner)
 - lib/venue/ synthetic arena, vendor catalogue, events (date order; first event has no previous night)
+- lib/deep/ real-venue planner (Climate Pledge Arena): sourced venue data, economics, Erlang C queues, newsvendor par levels, HiGHS MIP solver, ablation/sensitivity analysis (lib/deep/README.md)
+- app/night + app/api/night the real-venue planner page and API
+- predictions/ dated, hashed pre-registered predictions. Never edit a committed file there; add a new dated one
 - docs/ judge-facing docs and screenshots only
 
 API contract: response types in lib/qloo/types.ts first; mock.ts must return the same shapes.

@@ -28,6 +28,12 @@ ok(badJson.status === 400, `agent with invalid JSON -> ${badJson.status}`);
 const empty = await post("/api/agent", "{}");
 ok(empty.status === 400, `agent with no question -> ${empty.status}`);
 
+// Real-venue planner (lib/deep): page renders and the API returns the venue and its events.
+const nightPage = await fetch(BASE + "/night");
+ok(nightPage.status === 200, `GET /night -> ${nightPage.status}`);
+const night = await get("/api/night");
+ok(night.status === 200 && night.body?.venue && Array.isArray(night.body?.events), `GET /api/night -> ${night.body?.events?.length ?? 0} events at ${night.body?.venue?.name ?? "?"}`);
+
 const featured = ev.body?.featured ?? ev.body?.events?.[0]?.id;
 
 // Driver scores are normalised contributions, never shown as percentages.

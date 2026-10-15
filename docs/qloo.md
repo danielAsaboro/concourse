@@ -61,6 +61,27 @@ A timeout is never shown as "no change", and a failed call is never shown as a l
 | `filter.results.entities` on the hackathon host | Listed as optional for brand and place | Restricts results to our shortlist | Count results vs shortlist size |
 | `/search` `types` param for places | Not pinned down | `types=urn:entity:place` | Resolve Nobu, Shake Shack |
 
+## 6b. Real-venue planner (`/night`, `lib/deep/`)
+
+A second planner works on one real arena (Climate Pledge Arena, Seattle) from its published dining guide, maps and event feed. Method, inputs and limits are in [`lib/deep/README.md`](../lib/deep/README.md). It uses Qloo in three ways, all live-only (with no key the taste signal shows as **Pending** and the plan equals the without-Qloo ablation):
+
+| Use | Call (lib/deep/taste.ts) | What it changes |
+|---|---|---|
+| Resolve tonight's anchor | `/search` for the headliner (artist) or the team | The signal entity for the calls below |
+| Rank every concept's cuisine in **one** call | `/v2/tags?filter.query=` to resolve each concept's tag, then `/v2/insights?filter.type=urn:tag&signal.interests.entities=<anchor>&filter.results.tags=<concept tags>` | Affinity z-scores within tonight's call move demand by `exp(β·z)` in the solver |
+| Scout local places near the arena | `/v2/insights?filter.type=urn:entity:place&filter.location=<arena point>&filter.location.radius=3000` | Shown as context; not used by the solver |
+| Does Qloo matter | none (analysis) | Ablation with the taste signal off, baselines, and the break-even affinity gap per location |
+
+Raw Qloo responses are kept privately in `.cache/qloo-raw/` (gitignored, kit rule).
+
+Docs-vs-live questions for the first live call (add them to §6 once tested):
+
+| Question | Code assumes | Test |
+|---|---|---|
+| Does `filter.results.tags` restrict a `filter.type=urn:tag` insights call to our tags? | Yes, one ranked row per concept tag | Count rows vs tags sent |
+| `filter.location.radius` units on insights | Metres (`3000`) | Compare result distances at 1000 vs 3000 |
+| Entity type for "Seattle Kraken" | `urn:entity:brand` | `/search?query=Seattle Kraken` with no `types`, record the returned type |
+
 ## 7. Config
 
 `QLOO_API_KEY` (server only), `QLOO_BASE_URL` (default `https://hackathon.api.qloo.com`), `QLOO_MODE=mock` (force demo data), `ANTHROPIC_API_KEY` (optional; enables the Claude agent). Names only; values never go in the repo.
