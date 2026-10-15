@@ -18,7 +18,8 @@ const SYSTEM = `You are the event-night operations agent for an arena. The opera
 You ground every recommendation in Qloo taste data through your tools. Never invent an affinity. If a tool returns nothing, say so.
 Qloo affinities are relative to the query: compare within one ranking, not across events. They describe aggregate crowd taste, never individuals.
 Be concise and operational: lead with the decision, then the evidence (affinity, which anchor drove it). When the operator asks to change a stand, call swap_stand.
-Label anything that is your own inference (revenue, foot traffic) as an inference.`;
+Label anything that is your own inference (revenue, foot traffic) as an inference.
+Driver scores from explainability are normalised contributions, not shares: never state them as percentages. Quote the score (e.g. "driver score 0.62") or say which headliner drives most of it.`;
 
 const tools: Anthropic.Tool[] = [
   {
@@ -84,6 +85,7 @@ function offlineAnswer(question: string, plan: Plan, swaps: AgentReply["swaps"])
   const vendor = VENDORS.find((v) => q.includes(v.name.toLowerCase()));
   if (stand && vendor && (q.includes("swap") || q.includes("put") || q.includes("change") || q.includes("move"))) {
     if (vendor.category !== stand.stand.category) return `${vendor.name} is a ${vendor.category} partner and ${stand.stand.label} is a ${stand.stand.category} stand, so I left it alone.`;
+    if (stand.vendorId === vendor.id) return `${vendor.name} is already at ${stand.stand.label} (fit ${stand.fit.toFixed(2)}). Nothing to change.`;
     swaps.push({ standId: stand.stand.id, vendorId: vendor.id });
     const r = plan.ranked[stand.stand.category].find((x) => x.vendorId === vendor.id);
     return `Done: ${stand.stand.label} now has ${vendor.name}. Its affinity for the ${plan.event.anchors.join(" + ")} crowd is ${r?.affinity.toFixed(2) ?? "unknown"}, against ${stand.affinity.toFixed(2)} for ${stand.vendorName}, which the plan had there.`;
@@ -109,7 +111,7 @@ export async function askAgent(question: string, plan: Plan): Promise<AgentReply
   const ledger = new Ledger();
   const swaps: AgentReply["swaps"] = [];
   if (!process.env.ANTHROPIC_API_KEY) {
-    return { text: offlineAnswer(question, plan, swaps), ledger: ledger.entries, engine: "offline", swaps };
+    return { text: offlineAnswer(question, plan, swaps), ledger: plan.ledger, engine: "offline", swaps };
   }
   const client = new Anthropic();
   const messages: Anthropic.MessageParam[] = [{ role: "user", content: `${planContext(plan)}\n\nOperator: ${question}` }];
