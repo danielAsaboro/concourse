@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit",
     "smoke": "node scripts/smoke.mjs",
     "test": "npm run typecheck && npm run smoke && npm run test:model",
-    "test:model": "tsx --test lib/deep/*.test.mts"
+    "test:model": "tsx --test lib/deep/*.test.mts lib/ops/*.test.mts"
   },
   "author": "Daniel Asaboro",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.1",
     "highs": "^1.15.3",
-    "next": "^16.4.0",
+    "next": "^16.4.3",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "server-only": "^0.0.1",

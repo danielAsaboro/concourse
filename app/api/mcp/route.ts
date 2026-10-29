@@ -1,6 +1,6 @@
 // Minimal MCP server (Streamable HTTP, stateless, JSON responses) so anyone can
 // check the planner from their own MCP client: POST JSON-RPC to /api/mcp.
-// Tools: list_events, plan_event, erlang_c, newsvendor, textbook_checks.
+// Tools: list_events, plan_event, staff_event, merch_plan, erlang_c, erlang_a, newsvendor, textbook_checks.
 import { NextRequest, NextResponse } from "next/server";
 import { EVENTS, eventById, FLEX_SLOTS, CONCEPTS } from "@/lib/deep/venue";
 import { analyse } from "@/lib/deep/analysis";
@@ -8,6 +8,9 @@ import { tasteFor } from "@/lib/deep/taste";
 import { erlangC, meanWait, serviceLevel } from "@/lib/deep/queue";
 import { newsvendor } from "@/lib/deep/newsvendor";
 import { textbookChecks } from "@/lib/deep/checks";
+import { opsPlan } from "@/lib/ops/night";
+import { merchPlan } from "@/lib/ops/merch";
+import { erlangA, transient } from "@/lib/ops/erlangA";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -30,6 +33,21 @@ const TOOLS = [
     name: "newsvendor",
     description: "Prep quantity at critical ratio (price − cost)/(price − salvage) under normally distributed demand.",
     inputSchema: { type: "object", properties: { meanDemand: { type: "number" }, sdDemand: { type: "number" }, price: { type: "number" }, unitCost: { type: "number" }, salvage: { type: "number" } }, required: ["meanDemand", "sdDemand", "price", "unitCost", "salvage"] },
+  },
+  {
+    name: "staff_event",
+    description: "Registers per 15 minutes for every stand (time-varying Erlang A), shifts from a HiGHS covering program, and the cost of Seattle's 14-day schedule lock for one event.",
+    inputSchema: { type: "object", properties: { eventId: { type: "string" } }, required: ["eventId"] },
+  },
+  {
+    name: "merch_plan",
+    description: "Merch count-in by item and size, registers before and during the set, and sales lost to lines for one event (atVenu genre priors).",
+    inputSchema: { type: "object", properties: { eventId: { type: "string" } }, required: ["eventId"] },
+  },
+  {
+    name: "erlang_a",
+    description: "M/M/c+M queue with abandonment. Steady state, or a burst: give burstMin to start from an empty stand and run the arrivals for that many minutes.",
+    inputSchema: { type: "object", properties: { arrivalsPerMin: { type: "number" }, serviceMin: { type: "number" }, servers: { type: "integer" }, patienceMin: { type: "number" }, burstMin: { type: "number" } }, required: ["arrivalsPerMin", "serviceMin", "servers", "patienceMin"] },
   },
   { name: "textbook_checks", description: "Re-run the published Erlang C example, the newsvendor hand calculation and solver-vs-brute-force checks against this deployment.", inputSchema: { type: "object", properties: {} } },
 ];
@@ -75,6 +93,31 @@ async function callTool(name: string, args: Record<string, unknown>) {
       const a = lambda * s;
       const t = args.targetMin === undefined ? 1 : num(args.targetMin, "targetMin");
       return text({ offeredLoadErlangs: a, utilisation: a / c, pWait: erlangC(a, c), meanWaitMin: meanWait(a, c, s), serviceLevel: serviceLevel(a, c, s, t), targetMin: t, stable: a < c });
+    }
+    case "staff_event": {
+      const e = eventById.get(String(args.eventId));
+      if (!e) return text({ error: `Unknown event ${args.eventId}` }, true);
+      const o = await opsPlan(e);
+      return text({ event: o.event, crowd: o.genre, totals: o.totals, intervals: o.intervals, stands: o.stands.map((s) => ({ id: s.id, name: s.name, registers: s.registers, steadyState: s.sipp, walkAway: +s.abandonShare.toFixed(4) })), seattle: { postAtPercentile: o.seattle.optimal.q, saving: Math.round(o.seattle.savingVsForecast), sharperForecastSaving: Math.round(o.seattle.sharperForecast.saving) }, solver: o.solver });
+    }
+    case "merch_plan": {
+      const e = eventById.get(String(args.eventId));
+      if (!e) return text({ error: `Unknown event ${args.eventId}` }, true);
+      const o = await opsPlan(e);
+      const m = merchPlan(e, o.attendance);
+      return text({ genre: m.genre, gross: Math.round(m.gross), venueShare: Math.round(m.venueShare), registers: m.registers, early: m.early, lostSales: Math.round(m.lostSales), countIn: m.stock.map((s) => ({ id: s.id, quantity: s.quantity })) });
+    }
+    case "erlang_a": {
+      const l = num(args.arrivalsPerMin, "arrivalsPerMin"), s = num(args.serviceMin, "serviceMin"), c = Math.round(num(args.servers, "servers")), pat = num(args.patienceMin, "patienceMin");
+      if (args.burstMin !== undefined) {
+        const T = num(args.burstMin, "burstMin");
+        const r = transient(() => l, c, s, pat, T);
+        const tail = transient(() => 0, c, s, pat, 60, r.end);
+        const arr = r.arrivals;
+        return text({ mode: "burst from empty", arrivals: arr, walkAwayShare: (r.abandons + tail.abandons) / arr, meanWaitMin: (r.fanMinutesWaiting + tail.fanMinutesWaiting) / arr, peakQueue: r.peakQueue });
+      }
+      const r = erlangA(l, s, c, pat);
+      return text({ mode: "steady state", pWait: r.pWait, walkAwayShare: r.pAbandon, meanWaitMin: r.meanWaitMin, meanQueue: r.meanQueue, utilisation: r.utilisation });
     }
     case "newsvendor":
       return text(newsvendor({ meanDemand: num(args.meanDemand, "meanDemand"), sdDemand: num(args.sdDemand, "sdDemand"), price: num(args.price, "price"), unitCost: num(args.unitCost, "unitCost"), salvage: num(args.salvage, "salvage") }));

@@ -3,6 +3,7 @@
 // shared design tokens from globals.css but no shared components, so the UI
 // thread can fold it into the dashboard later without merge conflicts.
 import { useEffect, useMemo, useState } from "react";
+import { island, useIslandTask } from "@/components/island/Island";
 
 type Ev = { id: string; title: string; date: string; start: string; kind: string; headliner: string; source: string };
 type Slot = { id: string; label: string; level: string; kind: string; servers: number; statusQuo: string | null; capabilities: string[]; assumptions: string[]; source: string };
@@ -58,6 +59,30 @@ export default function Night() {
       .then((r) => r.json()).then((x: Analysis) => { if (x.error) setErr(x.error); else setA(x); })
       .catch((e) => setErr(String(e))).finally(() => setLoading(false));
   }, [eventId, pins]);
+
+  // Dynamic Island: the solver's live state while it runs, tonight's plan at rest.
+  const evNow = meta?.events.find((e) => e.id === eventId);
+  useIslandTask(
+    loading,
+    { title: `Solving ${evNow?.headliner ?? "tonight"} with HiGHS`, detail: "Choosing a concept for every rotating stand, then prep and registers." },
+    () => (a ? { title: `Plan ready · ${a.plan.solver.status}`, value: usd(a.plan.total), ttl: 2600 } : null),
+  );
+  useEffect(() => {
+    if (!a) return;
+    island.rest({
+      title: `${a.event.headliner} · ${fmtDate(a.event.date, a.event.start).split(" · ")[0]}`,
+      value: usd(a.plan.total),
+      detail: a.taste.status === "live"
+        ? "Expected contribution from the rotating stands with tonight's Qloo taste signal."
+        : "Expected contribution from the rotating stands. Qloo's taste signal is pending on this deployment, so this is the without-Qloo plan.",
+      facts: [
+        { label: "Solver", value: a.plan.solver.status },
+        { label: "HiGHS solves", value: String(a.solves.length) },
+        { label: "Qloo taste", value: a.taste.status === "live" ? "Live" : "Pending" },
+      ],
+    });
+  }, [a]);
+  useEffect(() => () => island.rest(null), []);
 
   const cname = useMemo(() => new Map((meta?.concepts ?? []).map((c) => [c.id, c.name])), [meta]);
   const n = (id: string | null | undefined) => (id ? cname.get(id) ?? id : "–");
