@@ -9,3 +9,5 @@ logs/
 .DS_Store
 # Internal hackathon notes live in the private parent folder, never here.
 hackathon/
+*.tsbuildinfo
+next-env.d.ts
