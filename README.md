@@ -6,7 +6,7 @@
 
 ## Hackathon requirements
 
-- [ ] Hosted, public demo: _URL goes here once deployed_
+- [x] Hosted, public demo: https://concourse-eosin.vercel.app
 - [ ] Public repository: _URL goes here once pushed_
 - [x] Open-source license: MIT ([LICENSE](LICENSE)); shown in GitHub's About section once pushed
 - [ ] Integrates the Qloo API: implemented in [`lib/qloo`](lib/qloo); live verification pending the key ([docs/qloo.md](docs/qloo.md))
