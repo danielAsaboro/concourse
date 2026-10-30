@@ -84,28 +84,32 @@ const STEPS = [
 
 const usd = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
 
+type Solve = { error?: string; event: { headliner: string; date: string; start: string }; plan: { total: number; solver: { status: string } }; solves: unknown[]; taste: { status: string } };
+
 /** Tonight's solve at Climate Pledge Arena, carried by the hero's Dynamic Island. */
 function useLiveSolve() {
   useEffect(() => {
-    if (!NIGHT_HREF) return;
+    // The static preview has no solver; it carries a snapshot of a real solve taken when it was built.
+    const snap = (window as unknown as { __NIGHT_SNAPSHOT__?: Solve }).__NIGHT_SNAPSHOT__;
+    if (!NIGHT_HREF && !snap) return;
     let gone = false;
-    island.show({ tone: "busy", title: "Solving tonight at Climate Pledge Arena" });
-    fetch("/api/night").then((r) => r.json())
-      .then((m: { events: { id: string }[] }) => fetch(`/api/night?event=${encodeURIComponent(m.events[0].id)}`)).then((r) => r.json())
-      .then((a: { error?: string; event: { headliner: string; date: string; start: string }; plan: { total: number; solver: { status: string } }; solves: unknown[]; taste: { status: string } }) => {
+    if (!snap) island.show({ tone: "busy", title: "Solving tonight at Climate Pledge Arena" });
+    (snap ? Promise.resolve(snap) : fetch("/api/night").then((r) => r.json())
+      .then((m: { events: { id: string }[] }) => fetch(`/api/night?event=${encodeURIComponent(m.events[0].id)}`)).then((r) => r.json() as Promise<Solve>))
+      .then((a) => {
         if (gone || a.error) { island.clear(); return; }
         const day = new Date(`${a.event.date}T12:00:00`).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
-        island.show({ title: `Plan solved · ${a.plan.solver.status}`, value: usd(a.plan.total), ttl: 2400 });
+        if (!snap) island.show({ title: `Plan solved · ${a.plan.solver.status}`, value: usd(a.plan.total), ttl: 2400 });
         island.rest({
           title: `Climate Pledge Arena · ${a.event.headliner}`,
           value: usd(a.plan.total),
-          detail: `${day}, ${a.event.start}. Expected contribution from the rotating stands, solved just now on the arena's own dining guide and maps.${a.taste.status === "live" ? " Qloo's taste signal is live." : " Qloo's taste signal is pending here, so this is the without-Qloo plan."}`,
+          detail: `${day}, ${a.event.start}. Expected contribution from the rotating stands, solved ${snap ? "when this preview was built" : "just now"} on the arena's own dining guide and maps.${a.taste.status === "live" ? " Qloo's taste signal is live." : " Qloo's taste signal is pending here, so this is the without-Qloo plan."}`,
           facts: [
             { label: "Solver", value: a.plan.solver.status },
             { label: "HiGHS solves", value: String(a.solves.length) },
             { label: "Qloo taste", value: a.taste.status === "live" ? "Live" : "Pending" },
           ],
-          action: { label: "Open the planner", href: NIGHT_HREF },
+          ...(NIGHT_HREF ? { action: { label: "Open the planner", href: NIGHT_HREF } } : {}),
         });
       })
       .catch(() => island.clear());
